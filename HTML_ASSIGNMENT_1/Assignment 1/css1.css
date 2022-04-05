@@ -1,0 +1,93 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family:sans-serif;
+    word-wrap: break-word;
+    
+}
+
+
+body
+{
+    background-color:#eeeff1;  min-width: 900px;
+}
+
+
+/*optimize css............*/
+.commom_flex{display: flex;}
+.bgcolor{ background-color:#ffffff;}
+.fixed-margin{margin: auto;}
+.fixed-width{width: 900px;}
+
+/*optimize css............*/
+
+
+
+
+/*css for head1*/
+header{background-color: #1F95D3;}
+.first-header{  color: #ffffff; padding: 16px 0 16px 0; }
+.first-header h5{ color:#226995;}
+.second-header{ background-color:#2F4F66; padding: 11px 0 11px 0;}
+.second-header h3{ color:#ffffff;}
+/*css for head end................*/
+
+
+
+
+
+/*css for middle section............*/ 
+
+section{ background-color: #eeeff1; width: 100%;}
+/*css for middle section end............*/ 
+
+
+
+
+/* css for middle content.......................................*/
+
+.middle-section{justify-content: space-between; align-items: flex-start;}
+.section-margin{margin-top: 57px; margin-bottom: 57px;}
+
+
+/*css for form-content...................*/
+.label-feild{  margin:0px 8px 28px 8px;  width: 525px; }
+.form-content{padding:27px;}
+.label-feild:first-child{padding-top: 20px;}
+.label-name{  width:25%; text-align: right;  padding: 3px 20px 5px 0;}
+.input-feild{ width: 75%; display: flex; flex-direction: column;}
+.gender{ width: 268px; display: inline-flex; text-align: center;  padding-top: 4px;}
+.gender span{ padding: 0px 15px 0px 5px;}
+input[type=text],input[type=email],input[type=telephone],select,textarea{width: 268px;padding: 9px;background-color: #E7E8EC;border:none;resize: none;}
+textarea{ height: 126px;}
+input[type=radio]
+{width: 20px;	height: 18px;}
+.bottom-label{ margin-top: 5px;  width: 268px; color: #90989F; font-size: 12px; display:inline-block;}
+.button{ background-color: #1F95D3; color: #ffffff; width:178px; font-size:20px;  border:none; padding: 6px 56px; border-radius: 4px; display: inline-flex; text-align: center; word-break: break-all;}
+/* css for middle-content end.............*/
+
+
+
+
+
+/*css for aside-content..............*/
+
+.aside-content{ width: 280px; padding: 27px; color: #A2ABB2; }               
+.aside-content p{ margin: 20px 0px; font-size: 14px;line-height: 18px;}
+.aside-content h3{border-bottom: 5px solid #E7E8EC;}
+.aside-content span,a
+{color:#41A5DF; text-decoration: none;}
+
+
+#link{ color: #1F95D3;font-size: 13px;}
+/*css for content end*/
+
+ 
+
+/*css for footer...........*/
+footer{background-color: #3E4C57;}
+.foot{padding: 25px 0px;  text-align: center; color:#CAD3DB; }
+
+
+
