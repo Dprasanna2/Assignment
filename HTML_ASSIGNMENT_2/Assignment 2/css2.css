@@ -1,0 +1,183 @@
+/*.........global Css......*/
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family:'Roboto', sans-serif;
+    word-wrap: break-word;
+   
+    
+}
+/*.....global css ends.....*/
+  
+
+
+body{min-width: 900px;}
+section{ margin: 10px 0px;}
+
+
+/*.....optimized css. common classes.......*/
+
+.float-left{float: left;}
+.float-right{float: right;}
+.border-none{border:none;}
+.clearfix{ content:""; clear:  both; display: table;}
+.cursor{cursor: pointer;}
+.inline-block{display: inline-block;}
+.fixed-width{width: 900px;}
+.width-100{width: 100%;}
+.width-178{width:178px;}
+.width50{width: 50%;}
+.center-align{margin: auto;}
+.f-12{font-size: 12px;}
+.f-13{font-size: 13px;}
+.f-18{font-size: 18px;}
+.image{background-color: #E2E6E7;}
+.vertical-align-mid{vertical-align: middle;}
+.center{text-align: center;}
+.header-sprite{height: 36px; width: 36px;margin-right:4px; overflow: hidden; background-image: url("icons_headerSocialMedia.png");}
+.para{ color: #7A8486; line-height: 1.4;}
+.image-description{padding: 2px 12px 15px;}
+.horizontal-content{ width: 263px;}
+.middle-content{ width: 615px;  padding:20px; margin-bottom: 30px; }
+.left-container{ margin-bottom: 25px;} 
+.aside-sprite{margin-right: 5px; height: 27px; width: 28px; border:1px;background-image: url("icons_socialMedia.png");}
+.color{color: #ffffff;}
+.flex{display:flex;flex-wrap: wrap; justify-content: space-between;}
+.border-rad{border-radius: 4px;}
+
+/*....optimized css ends.....*/
+
+
+
+/*.................header ...........................*/
+
+header{ background-color:#27546B;  }
+#header{margin-bottom: 15px;}
+.main-header h1{ padding: 2px; color: #52b8e9; font-weight: 100;}
+input[type='text']{  padding: 7px 5px;  border-radius: 4px 0 0 4px;}
+button[type='submit']{background-color: #0F2636;  padding: 8px 5px; border-radius: 0px 4px 4px 0px;  }
+.head-data{padding-top: 5px;}
+.searchbar{margin-right: 20px;}
+.header-sprite:last-child{margin:0px;}
+/*......social images in header.......*/
+
+.facebook{background-position: 0 0;}
+.facebook:hover{background-position: 0px -36px;}
+.twitter{background-position: -36px 0px;}
+.twitter:hover{background-position: -36px -36px;}
+.googlep{background-position: -72px 0px;}
+.googlep:hover{ background-position: -72px -36px;}
+
+/*.............social images css ends.......*/
+
+
+
+
+
+/*.......navigation css starts.......*/
+
+.navigation{background-color: #DEE2E3; }
+.nav-data ul {  list-style-type: none;}
+.nav-data li a { color: #7A8486;padding: 14px 16px;  text-decoration: none;}
+.hover:hover,.active { background-color:  #ffffff;}
+.border-none::placeholder{color:#c7cbcc;}
+/*........navigation css ends.......*/
+
+/*.....header ends......*/
+
+
+
+/*......about us css......*/
+
+.about-us h3{color: #265569;  border-bottom: 1px solid #265569; font-weight: 900;padding: 5px 5px 0px; margin-bottom: 15px;}
+
+/*.........about us css ends........*/
+
+
+/*...............section css...........*/
+
+.left-container:last-child{margin-bottom: 0px;}     
+.container-content{  background-color: #EBEFF0; padding: 12px;}
+.highlight{color: #3395C6; text-decoration: underline;}
+
+
+
+/*......second row css (3-images)......*/
+
+.image-description ul{margin: 0px 18px 5px;}
+.image-description li{list-style-type: disc; line-height: 1.5; color:#5e6669; font-weight: bold;}
+.image-description h2{margin-bottom: 10px;}
+.image-description p{font-size: 12px; color: #6e797f;}
+
+/*.......second row css ends......*/
+
+
+
+
+/*........horizontal images css.....*/
+
+
+
+.horizontal-image{ height: 100px;  width: 110px;}
+.horizontal-text{text-align: left; width:50%;}
+.text-color {color:#373F42;}
+.text-padding{padding: 10px 0px; color: #6e797f;}
+.more {color:#3494c6; text-decoration: none; font-weight: bold;}
+
+
+/*......horizontal images css ends.......*/
+
+
+
+/*........top_icon css.......*/
+
+.top-icon{padding: 20px 10px 20px 4px;}
+.top-button{width: 615px; text-align: right;}
+.top-button a{ color: #3394c3;font-size: 15px;}
+
+/*........top_icon css ends.....*/
+
+
+
+/*...... css for aside content....*/
+.aside{width: 270px;}
+.aside-up{ width: 270px; padding:15px;  background-color:#E2E6E7; margin-bottom: 10px; }
+.founder{margin-top: 25px;}
+.aside-up-founder h4{color:#566061; margin: 0px 0px 15px 0px;}
+.aside-up-founder p{ margin-bottom: 15px;}
+.fb{background-position-y: 0px;}
+.tw{background-position-y:-27px;}
+.go{background-position-y:-53px;}
+.yh{background-position-y:-81px;}
+.aside-image a{text-decoration: none;color: #434B4E; float: left; line-height: 2;}
+.aside-image{padding:0px 8px;}
+.aside-content{width:190px;}       
+.aside-image li{margin-bottom: 5px;}      
+.aside-down{padding: 15px; background-color:#E2E6E7; width: 270px;}
+
+/*...... css for newsletter block.....*/
+.aside-down h3{margin-bottom: 15px;}
+input[type=email]{ padding: 9px; background-color: #ffffff; color:#7A8486; margin-bottom:18px; border-radius: 4px 4px 4px 4px;}
+.button::placeholder{color: #9aa4a3;}
+.button{ background-color: #1F95D3; font-size:18px; padding: 6px 56px;font-weight: bold;}
+/*.....css for newsletter block ends....*/
+
+/*css for aside content ends......*/
+
+
+/*...........CSS FOR FOOTER...............*/
+footer{ background-color: #434B4E;}
+.footer-content{padding:14px 0px; }
+
+.footer-list li{ border-right: 1px solid #7A8486; padding: 0px 10px; }
+.footer-list li:last-child{border-right: none; padding-right: 0px;}
+.footer-list li:first-child{  padding-left: 0px;}
+.footer-list a{font-weight: 900; font-size: 13px;text-decoration: none;}
+.footer-list ul{  list-style-type: none;  margin-bottom:10px;}
+.copyright{ color: #DEE2E3;}
+
+.right-footer-content p{ line-height: 3.5; word-wrap: break-word; width:70%; text-align: right;}
+.right-footer-content img{ background-color: #373F42; padding: 8px 5px;}
+/*......... css for footer ends....*/
