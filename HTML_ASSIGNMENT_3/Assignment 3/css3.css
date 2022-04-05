@@ -1,0 +1,152 @@
+
+/* .... global css .... */
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family:'Courier New', Courier, monospace; 
+    word-wrap: break-word;
+   
+}
+/* ...global css end */
+
+
+
+/* .... optimize css(common css)..... */
+.f11{font-size: 11px;}
+.flex{display: flex;}
+.bgcolor-white{background-color: #fff;}
+.color-white{color: #fff;}
+.clearfix{content: " ";display:block; clear: both; }
+.float-right{float: right;}
+.cursor{cursor: pointer;}
+.mg-bottom{margin-bottom: 20px;}
+.decoration{text-decoration: none;}
+.fixed-width{width: 100%;}
+/* .....common css ends */
+
+
+
+body{background-image: url(tile_body.jpg)}
+.main-section{width: 975px; margin:30px auto 0px;}
+.main-section::after{content: " ";display:block; clear: both; }
+
+/* ..... css for header...*/
+.head-data{ width: 16.2%; float: left;}
+.navbar{margin-bottom: 40px;}
+.navbar ul{list-style-type: none;padding:0px 15px; }
+.navbar li{margin-bottom: 10px; word-break: break-all; width: 100%;}
+.navbar li:last-child{margin: 0px;}
+.navbar li img{margin-right: 10px;}
+.navbar a{color: #000000;display: flex;align-items:flex-start;}
+.navbar a span{ width: 70%;transform: translateY(10px); font-weight: bold;}
+.navbar li:hover{background-color: grey;}
+.get-update p{background-color: #cbccd1; color: #59595b;padding: 10px 3px; margin-bottom:15px;}
+ .icon{display:flex; justify-content: center;padding-top: 5px;margin-bottom: 18px;}
+ input[type='text']{margin-bottom:12px; padding: 8px 0px; text-indent:5px;border-radius: 4px; border:1px solid #cbccd1;}
+.aside-button{ border-radius: 4px; background-color: #c31632;text-align: center;font-size:14px; border:none; padding: 8px 0px;}
+form p{margin-bottom: 15px; font-size: 10px; line-height: 1.2;}
+
+/* .....header css ends......... */
+
+
+
+/* ..... css for section....... */
+
+.right-content{width: 81%;}
+.banner img{border: 5px solid #fff; height: auto;}
+.sign-in{padding: 25px 20px; align-items: flex-start;}
+.mail img{width: 29px; height: 17px; margin: 4px 4px 0px 0px;}
+.input-feild input[type='text']{width: 70%; margin: 0px; padding: 8px;border-radius: 0px;}
+.button{width: 25%; border-radius: 0px 4px 4px 0px;border:none;padding: 10px; background-color: #c31632;text-align: center;}
+.mail{width: 45%;}
+.input-feild{width: 55%;display: flex; justify-content: flex-end; flex-wrap: wrap;}
+.product{justify-content: space-between; flex-wrap: wrap; }
+.product-desc{width: 31.3%;}
+.product-desc h4{color: #c31632; font-size: 14px; }
+.product-desc p{line-height:2; }
+.read { color: #000000; font-weight: bold; text-align: right; font-size: 12px;}
+/* ....css for section ends..... */
+
+
+
+/* ....... css for footer....... */
+.copyright{color: #000000; }
+.footer-content{width:81%; background-color: #9D9D9D;display: flex;justify-content: space-between;flex-wrap: wrap; padding: 20px; word-break:break-all;}
+.left-footer-content ul{display:flex; margin-bottom: 8px; flex-wrap: wrap;}
+.left-footer-content li{padding: 0px 8px; border-right: 1px solid #95918d}
+.left-footer-content li:first-child{padding-left: 0px; }
+.left-footer-content li:last-child{border:none;padding-right:0px;  }
+/* ........css for footer ends........ */
+
+
+
+
+/*............... media querry............*/
+ 
+/* css for tablets view */
+
+@media (max-width:991px) and (min-width:768px)
+{
+    .right-content,.head-data,.navbar,.footer-content{width: 100%;}
+    .main-section{width: 90%; display:flex;flex-wrap: wrap; justify-content: center;}
+    .head-data{display: flex; margin-bottom: 20px;align-items: center;}
+    .navbar{margin: 0px;}
+    .navbar ul{display: flex; flex-wrap: wrap; justify-content:space-around; margin: 0px;padding: 0px;}
+    .navbar li{width: 20%; display: flex;  flex-direction: column;  align-items: center;  margin: 0;  padding: 0;}
+    .navbar li a span{width: 100%; transform: none; }
+    .navbar li img{margin:0px; }
+    .navbar a{display: flex; flex-direction: column;align-items: center;}
+    .icon{margin: 0px; padding: 0px;}
+    .get-update{display: none;}
+    form{display: none;}
+    .logo{ padding: 0px; margin: 0px;}
+    .banner img{ height:auto;}
+    .footer-content{flex-wrap: wrap;}
+    .footer-list ul{justify-content: space-around;display: flex;}
+ 
+}
+/* css for tablet view end... */
+
+/* css for mobile view.. */
+
+@media (max-width:767px) and (min-width:320px)
+{
+    .main-section{width: 95%;display:flex;flex-wrap: wrap; justify-content: center;}
+    .head-data{text-align:center; justify-content: center;  margin-right: 0px;}
+    .right-content,.head-data,.sign-in,.mail,.input-feild,.footer-content{width: 100%;}
+    form,.get-update{display: none;}
+    .head-data{margin-bottom: 25px;}
+    .left-footer-content,.product-desc{ margin-bottom: 20px;}
+    .icon{padding: 0px;}
+    .navbar{margin: 0px;}
+    .navbar ul{display: flex; flex-wrap: wrap; margin: 0px;padding: 0px;}
+    .navbar li{width: 33.3%; margin: 0;  padding: 0;}
+    .navbar li a span{width: 100%; transform: none;}
+    .navbar li img{margin:0px;}
+    .navbar a{flex-direction: column;align-items: center;}
+    .banner img{height: auto;}
+    .sign-in{ flex-direction: column;padding: 15px;}
+    .mail{margin-bottom: 10px;}
+    .mail img{margin-top: 0px;}
+    .input-feild input[type='text']{width: 75%; margin: 0px; padding: 8px 2px;border-radius: 0px;}
+    .product{justify-content: center;}
+    .read,.footer-list li{margin-bottom: 10px;}
+    .product-desc{width: 80%;border-bottom:1px solid #dedede;}
+    .product-desc:last-child{border: none;}
+    .footer-content{flex-direction: column; align-items: center;}
+    .footer-list li{margin: 0px; font-size: 10px;}
+    .product-desc:last-child .read{margin: 0px;}
+    .left-footer-content ul{align-content: center;width: 100%;}
+    .copyright{text-align: center; font-size:10px; }
+
+}
+
+@media (max-width:576px){
+    .navbar li{width:50%;}
+    .navbar li a{align-items: center;}
+}
+/* css for mobile view ends.. */
+
+
+/* ...... media querry end..*/
