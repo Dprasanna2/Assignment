@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+    <title>ASSIGNMENT JS 1</title>
+    
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta charset="UTF-8">
+        <link rel="stylesheet" type="text/css" href="javascript.css">
+<link href="https://fonts.googleapis.com/css?family=Lato:300,400&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    </head>
+    <body>
+        <div class="container m-auto">
+            <h1 class="text-center mb-5">JAVASCRIPT ASSIGNMENT 1</h1>
+            <form action="#">
+       <div class="row">
+        <div class="col-md-6 col-12 ">
+            <div class="form-group">
+                <label>First Name <span class="text-primary">&#x2a;</span></label>
+                <input type="text" class="form-control" name="firstname" id="f_name" placeholder="Enter your First Name.." autocomplete="off" onfocusout="return fname_validate(); return error_msg()">
+                <span id='fname_alert' class="text-danger"></span>
+            </div>
+        </div>
+  <div class="col-md-6 col-12 ">
+            <div class="form-group">
+                <label>Last Name <span class="text-primary">&#x2a;</span></label>
+                <input type="text" class="form-control" id="l_name" placeholder="Enter your Last Name.." autocomplete="off" onfocusout="return lname_validate()">
+                <span id='lname_alert' class="text-danger"></span>
+            </div>
+        </div>
+ 
+        <div class="col-md-6 col-12 ">
+            <div class="form-group">
+                <label>Email Address <span class="text-primary">&#x2a;</span></label>
+                <input type="email" class="form-control" placeholder="xyz@gmail.com" id="email" autocomplete="off" onfocusout="return email_validate()">
+                <span id='email_alert' class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="col-lg-3 col-md-6 col-12 ">
+            <div class="form-group">
+                <label>Password <span class="text-primary">&#x2a;</span></label>
+                <input type="password" id="txtPassword" class="form-control mb-1" name="txtPassword" autocomplete="off" placeholder="Enter the password.." onfocusout="return pass_validate()" onkeyup="pass_strength()">
+                <button type="button" id="btnToggle" class="toggle"><i id="eyeIcon" class="fa fa-eye" onfocusout=" return togglePassword()"></i></button>
+                <span id='pass_alert' class="text-danger"></span>
+               
+               <div class="progress">
+                <div class="progress-bar" role="progressbar" id="strength" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100"></div>
+              </div>
+               <span id="strength_alert"></span>
+               
+           
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6 col-12 ">
+                <div class="form-group">
+                    <label>Confirm Password <span class="text-primary">&#x2a;</span></label>
+                    <input type="password" class="form-control" placeholder="Re-enter the password.." autocomplete="off" id="conPassword" onfocusout="return conpass_validate()">
+                    <span id="conPass_alert" class="text-danger"></span>
+                </div>
+            </div>
+
+
+
+
+
+
+
+        <div class="col-md-6 col-12 ">
+                <div class="form-group">
+                    <label>Country <span class="text-primary">&#x2a;</span></label>
+                    <select class="form-control" id='country_name'  onchange=" country_validate()" >
+                            <option  value="selectcountry">Select Country..</option>
+                            <option>INDIA</option>
+                            <option>USA</option>
+                            <option>CHINA</option>
+                            <option>ENGLAND</option>
+                            <option>RUSSIA</option>
+                          </select>
+                          <span id="country_alert" class="text-danger"></span>
+                </div>
+            </div>
+         <div class="col-md-6 col-12 ">
+            <div class="form-group">
+                <label>State <span class="text-primary">&#x2a;</span></label>
+                    <select class="form-control" id="state_name"  disabled>
+                        <option value="selectstate">Select State..</option>
+                        <option>Maharashtra</option>
+                        <option>Goa</option>
+                        <option>Rajasthan</option>
+                        <option>Punjab</option>
+                        <option>Kerala</option>
+                    </select>
+                    <span id="state_alert" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-md-6 col-12 ">
+            <div class="form-group">
+                <label>City <span class="text-primary">&#x2a;</span></label>
+                    <input type="text" class="form-control" placeholder="Enter the City Name.." id='city' autocomplete="off" onfocusout="return city_validate()">
+                    <span id='city_alert' class="text-danger"></span>
+            </div>
+        </div>
+
+
+
+        <div class="col-md-6 col-12 ">
+            <div class="form-group">
+                <label>Zip <span class="text-primary">&#x2a;</span></label>
+                    <input type="text" class="form-control" placeholder="Enter the Zip code.." id="zipcode" autocomplete="off" onfocusout="return zip_validate()">
+                    <span id='zip_alert' class="text-danger"></span>
+            </div>
+        </div> 
+
+
+
+        <div class="col-12 ">
+            <div class="form-group ">
+                <label class="d-block">I am: <span class="text-primary">&#x2a;</span></label>
+                <div class="form-check-inline">
+                        <label class="form-check-label">
+                          <input type="radio" class="form-check-input" name="optradio" value="Freelancer" onclick="Freelancer_display()" checked>Freelancer</label>
+                      </div>
+                      <div class="form-check-inline">
+                        <label class="form-check-label">
+                          <input type="radio" class="form-check-input" name="optradio" value="University" onclick="University_display()">University</label>
+                      </div>
+                      <div class="form-check-inline">
+                        <label class="form-check-label">
+                          <input type="radio" class="form-check-input" name="optradio" value="Company" onclick="Company_display()">Company</label>
+                      </div>
+            </div>
+        
+            <div class="row" id="University">
+        <div class="col-md-6 col-12 " >
+                <div class="form-group">
+                    <label>Name of University <span class="text-primary">&#x2a;</span></label>
+                        <input type="text" class="form-control" placeholder="Enter name of University" id='uni_name' onfocusout="return university()">
+                        <span class="text-danger" id="uni_alert"></span>
+                </div>
+            </div>
+            <div class="col-md-6 col-12 " >
+                <div class="form-group ">
+                    <label>University Website <span class="text-primary">&#x2a;</span></label>
+                    <div class="input-group-prepend rounded">
+                    <span class="input-group-text border-right-0 rounded-0">http://www.</span>
+                   
+                    <input type="text" class="form-control border-left-0 rounded-0" id="university_url" autocomplete="off" placeholder="Enter URL of University website" onfocusout="return uni_url()">
+                
+                </div>
+                <span class="text-danger" id="university_alert"></span>
+            </div>
+                </div>
+            </div>
+            <div class="row" id="Company">
+                <div class="col-md-6 col-12 ">
+                        <div class="form-group">
+                            <label>Name of Company <span class="text-primary">&#x2a;</span></label>
+                                <input type="text" class="form-control" placeholder="Enter name of Company" autocomplete="off" id="comp_name" onfocusout="return company()">
+                                <span class="text-danger" id='comp_alert'></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-12 " >
+                        <div class="form-group">
+                            <label>Company Website <span class="text-primary">&#x2a;</span></label>
+                            <div class="input-group-prepend rounded">
+                            <span class="input-group-text border-right-0 rounded-0">http://www.</span>
+                           
+                            <input type="text" class="form-control border-left-0 rounded-0" id="comp_url" autocomplete="off" placeholder="Enter URL of Company website" onfocusout="return company_url()">
+                        
+                        </div>
+                        <span class="text-danger" id="company_alert"></span>
+                    </div>
+                        </div>
+                        </div>
+            
+        </div>
+
+        <div class="col-12 d-flex flex-wrap">
+            <div class="col-md-6 border">
+                <label class="d-block ">My Systematic Review Skills <span class="text-primary">&#x2a;</span></label>
+                <div class="form-check">
+                    <label class="form-check-label">
+                        <input type="radio" class="form-check-input" value="Senior" name="opttradio" id="senior" onclick="return seniorAll();" onchange="return review_validate()">Senior (> 2 yrs of exp.)
+                    </label>
+                    </div>
+                    <div class="form-check">
+                    <label class="form-check-label">
+                    <input type="radio" class="form-check-input" value="Junior" name="opttradio" id="junior" onclick=" juniorAll()"  onchange="return review_validate()">Junior
+                    </label>
+                   
+                    </div>
+                    <div class="form-check-inline">
+                            <label class="form-check-label">
+                              <input type="checkbox" class="form-check-input" value="P" name="checkedAll"  onchange=" return radio_selection()" disabled>P</label>
+                          </div>
+                          <div class="form-check-inline">
+                            <label class="form-check-label">
+                              <input type="checkbox" class="form-check-input" value="I" name="checkedAll" onchange=" return radio_selection()"   disabled>I</label>
+                          </div>
+                          <div class="form-check-inline">
+                            <label class="form-check-label">
+                              <input type="checkbox" class="form-check-input" value="C" name="checkedAll" onchange=" return radio_selection()"   disabled>C</label>
+                          </div>
+                          <div class="form-check-inline">
+                                <label class="form-check-label">
+                                  <input type="checkbox" class="form-check-input" value="O" name="checkedAll" onchange=" return radio_selection()"  disabled>O</label>
+                              </div> 
+                            <a href="#" data-toggle="tooltip"  title="Senior all checkbox must be selected, junior greater than 1 less than 4 "><i class="fa fa-question-circle text-primary" aria-hidden="true" ></i></a>
+                            <span id="notvalid" class="text-danger"></span>
+            </div>
+            <div class="col-md-6 border">
+                    <div class="form-group">
+                            <label>Number of Published Reviews <span class="text-primary">&#x2a;</span></label>  <a href="#" data-toggle="tooltip" title="Published review for senior 'greater than 14' junior 'greater than 1' "><i class="fa fa-question-circle text-primary" aria-hidden="true" ></i></a>
+                            <input type="number" class="form-control" placeholder="Enter the number of Reviews" autocomplete="off" id="pub_input" onfocusout="return published()" disabled >
+                            <span class="text-danger" id="alert"></span>
+                        
+                        </div>
+            </div>
+            <div class="col-12 text-center my-2">
+            <!-- <button type="submit" class="btn-success border-0 rounded" >SUBMIT</button> -->
+            <button type="submit" id="data" class="btn btn-info btn-lg" data-toggle="modal" onclick=" return validate()" >submit</button>
+
+            <!-- Modal -->
+            <div class="modal fade " id="myModal" data-backdrop="static" role="dialog">
+              <div class="modal-dialog modal-lg popup ">
+              
+                <!-- Modal content-->
+                <div class="modal-content">
+                  <div class="modal-header heading">
+                   
+                    <h4 class="modal-title">PERSONAL DETAILS</h4>
+                  </div>
+                  <div class="modal-body modal-data">
+                      <h4 class="text-center text-success font-weight-bold"> Person Details</h4>
+                    <div class="row mb-3 border border-success">
+                        <div class="text-left col-6">
+                            <label class="label px-0">FIRST NAME :</label>
+                        </div>
+                        <div class="col-6 text-left">
+                            <span id="FirstN"></span>
+                        </div>
+                        <div class="text-left col-6">
+                            <label class="label px-0">LAST NAME :</label>
+                        </div>
+                        <div class="col-6 text-left">
+                            <span id="LastN"></span>
+                        </div>
+                        <div class="text-left col-6">
+                            <label class="label px-0">EMAIL :</label>
+                        </div>
+                        <div class="col-6 text-left">
+                            <span id="EMAILId"></span>
+                        </div>
+
+                        <div class="text-left col-6">
+                            <label class="label px-0">COUNTRY :</label>
+                        </div>
+                        <div class="col-6 text-left">
+                            <span id="CountryN"></span>
+                        </div>
+                        <div class="text-left col-6">
+                            <label class="label px-0">STATE :</label>
+                        </div>
+                        <div class="col-6 text-left">
+                            <span id="StateN"></span>
+                        </div>
+                        <div class="text-left col-6">
+                            <label class="label px-0">CITY :</label>
+                        </div>
+                        <div class="col-6 text-left">
+                            <span id="CityN"></span>
+                        </div>
+                        <div class="text-left col-6">
+                            <label class="label px-0">ZIP :</label>
+                        </div>
+                        <div class="col-6 text-left">
+                            <span id="ZipN"></span>
+                        </div>
+                    </div>
+                    <h4 class="text-center text-success font-weight-bold">Work Details</h4>
+                    <div class="row mb-3 border border-success">
+                        <div class="col-6 text-left">
+                            <label class="label px-0">TITLE:</label>
+                        </div>
+                        <div class="col-6 text-left">
+                            <span id="IAM"></span>
+                        </div>
+                        <div class="text-left col-6">
+                            <label class="label px-0">NAME OF UNIVERSITY:</label>
+                        </div>
+                        <div class="col-6 text-left">
+                            <span id="Uni_N"></span>
+                        </div>
+                        <div class="text-left col-6">
+                            <label class="label px-0">UNIVERSITY WEBSITE:</label>
+                        </div>
+                        <div class="col-6 text-left">
+                            <span id="Uni_web"></span>
+                        </div>
+                        <div class="text-left col-6">
+                            <label class="label px-0">NAME OF COMPANY :</label>
+                        </div>
+                        <div class="col-6 text-left">
+                            <span id="Comp_N"></span>
+                        </div>
+                        <div class="text-left col-6">
+                            <label class="label px-0">COMPANY WEBSITE:</label>
+                        </div>
+                        <div class="col-6 text-left">
+                            <span id="Comp_web"></span>
+                        </div>
+                    </div>
+                    <h4 class="text-center text-success font-weight-bold">Research Details</h4>
+                    <div class="row mb-3 border border-success">
+                        <div class="text-left col-6">
+                            <label class="label px-0">SYSTEMATIC REVIEWS:</label>
+                        </div>
+                        <div class="col-6 text-left">
+                            <span id="syst"></span>
+                        </div>
+                        <div class="text-left col-6">
+                                <label class="label px-0">SKILLS :</label>
+                            </div>
+                            <div class="col-6 text-left">
+                                <span id="skill"></span>
+                            </div>
+                        
+                        
+                        <div class="text-left col-6">
+                            <label class="label px-0">PUBLISHED REVIEWS :</label>
+                        </div>
+                        <div class="col-6 text-left">
+                            <span id="pub_review"></span>
+                        </div>
+                    </div>
+                        <div class="col-12">
+                            <button type="button" class="btn btn-danger" data-dismiss="modal">CLOSE</button>
+                        </div>
+                        
+                    
+                  </div>
+              
+                </div>
+                
+              </div>
+            </div>
+            
+        </div> 
+        </div>
+        </div>
+     
+        </form>
+    </div>
+    <script src="JS_FILE.js"></script>
+    </body>
+    </html>

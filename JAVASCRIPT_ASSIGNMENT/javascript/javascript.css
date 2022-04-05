@@ -1,0 +1,17 @@
+body{word-break: break-word;}
+.toggle {
+    background: none;
+    border: none;
+    color: #337ab7;
+    font-weight: 600;
+    position: absolute;
+    right: .75em;
+    top: 2.25em;
+    z-index: 9;
+  }
+.heading h4{ text-align: center!important; font-weight: bold!important; color: coral!important;}
+
+@media(max-width:576px){
+.label{font-size: 12px!important; padding: 0px 10px!important;}
+.modal-data span{font-size: 11px!important; }
+} 
