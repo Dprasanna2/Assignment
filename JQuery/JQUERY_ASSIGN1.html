@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>JQUERY ASSIGNMENT 1</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="JQUERYCSS.css">
+    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"
+        integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+</head>
+
+<body>
+    <div class="container">
+         <div class="row">
+            <div class="col-md-8 col-12 mb-3">
+                <div id="accordion">
+                    <div class="card">
+                        <div class="card-header card-name" id="heading-1">
+                            <h5 class="mb-0">
+                                <a role="button" class=" text-decoration-none head-name" data-toggle="collapse"
+                                    href="#collapse-1" aria-expanded="true" aria-controls="collapse-1">
+                                    DROPDOWN 1
+                                </a>
+                            </h5>
+                        </div>
+                        <div id="collapse-1" class="collapse show  border-0" data-parent="#accordion" aria-labelledby="heading-1">
+
+                            <div class="card-body card-text d-flex justify-content-between flex-wrap dropdown-1">
+                                <div class="custom-control custom-checkbox col-6 col-md-3 DD-1 ">
+                                    <input type="checkbox" name="list" class="custom-control-input individual showdiv1 select_text1"
+                                        data-value="text1" value="text1" id="customCheck1">
+                                    <label class="custom-control-label " for="customCheck1">TEXT 1</label>
+                                </div>
+                                <div class="custom-control custom-checkbox col-6 col-md-3 DD-1">
+                                    <input type="checkbox" name="list" class="custom-control-input individual showdiv1 select_text2"
+                                        data-value="text2" value="text2" id="customCheck2">
+                                    <label class="custom-control-label " for="customCheck2">TEXT 2</label>
+                                </div>
+                                <div class="custom-control custom-checkbox col-6 col-md-3 DD-1">
+                                    <input type="checkbox" name="list" class="custom-control-input individual showdiv1 select_text3"
+                                        data-value="text3" value="text3" id="customCheck3">
+                                    <label class="custom-control-label " for="customCheck3">TEXT 3</label>
+                                </div>
+                                <div class="custom-control custom-checkbox col-6 col-md-3 DD-1">
+                                    <input type="checkbox" name="list" class="custom-control-input individual showdiv1 select_text4"
+                                        data-value="text4" value="text4" id="customCheck4">
+                                    <label class="custom-control-label " for="customCheck4">TEXT 4</label>
+                                </div>
+                                <div class="custom-control custom-checkbox col-6 col-md-3 DD-1">
+                                    <input type="checkbox" name="list" class="custom-control-input individual showdiv1 select_text5"
+                                        data-value="text5" value="text5" id="customCheck5">
+                                    <label class="custom-control-label " for="customCheck5">TEXT 5</label>
+                                </div>
+                                <div class="custom-control custom-checkbox col-6 col-md-3 DD-1">
+                                    <input type="checkbox" name="list" class="custom-control-input individual showdiv1 select_text6"
+                                        data-value="text6" value="text6" id="customCheck6">
+                                    <label class="custom-control-label " for="customCheck6">TEXT 6</label>
+                                </div>
+                                <div class="custom-control custom-checkbox col-6 col-md-3 DD-1">
+                                    <input type="checkbox" name="list" class="custom-control-input individual showdiv1 select_text7"
+                                        data-value="text7" value="text7" id="customCheck7">
+                                    <label class="custom-control-label " for="customCheck7">TEXT 7</label>
+                                </div>
+                                <!-- <div class="custom-control custom-checkbox col-6 col-md-3 DD-1">
+                                    <input type="checkbox" name="list" class="custom-control-input individual showdiv1 select_text8"
+                                        data-value="text-8" value="text8" id="customCheck8">
+                                    <label class="custom-control-label " for="customCheck8">TEXT 8</label>
+                                </div> -->
+                                <div class="custom-control custom-checkbox col-6 col-md-3 DD-1">
+                                    <input type="checkbox" class="custom-control-input CheckedAll showdiv1 select_textall"
+                                        data-value="textall" value="All Selected" id="customCheckAll">
+                                    <label class="custom-control-label " for="customCheckAll">ALL</label>   
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header card-name" id="heading-2">
+                            <h5 class="mb-0">
+                                <a role="button" class="collapsed text-decoration-none head-name" data-toggle="collapse"
+                                    href="#collapse-2" aria-expanded="false" aria-controls="collapse-2">
+                                    DROPDOWN 2
+                                </a>
+                            </h5>
+                        </div>
+                        <div id="collapse-2" class="collapse border-0" data-parent="#accordion" aria-labelledby="heading-2">
+                            <div
+                                class="card-body card-text card-text d-flex justify-content-between flex-wrap dropdown-2">
+                                <div class="custom-control custom-checkbox col-6 col-md-3 ">
+                                    <input type="checkbox" name="list1" class="custom-control-input individual-1 showdiv2 select1_text9"
+                                        data-value="text9" value="text9" id="customCheck9">
+                                    <label class="custom-control-label" for="customCheck9">TEXT 9</label>
+                                </div>
+                                <div class="custom-control custom-checkbox col-6 col-md-3">
+                                    <input type="checkbox" name="list1" class="custom-control-input individual-1 showdiv2 select1_text10"
+                                        data-value="text10" value="text10" id="customCheck10">
+                                    <label class="custom-control-label" for="customCheck10">TEXT 10</label>
+                                </div>
+                                <div class="custom-control custom-checkbox col-6 col-md-3">
+                                    <input type="checkbox" name="list1" class="custom-control-input individual-1 showdiv2 select1_text11"
+                                        data-value="text11" value="text11" id="customCheck11">
+                                    <label class="custom-control-label" for="customCheck11">TEXT 11</label>
+                                </div>
+                                <div class="custom-control custom-checkbox col-6 col-md-3">
+                                    <input type="checkbox" name="list1" class="custom-control-input individual-1 showdiv2 select1_text12"
+                                        data-value="text12" value="text12" id="customCheck12">
+                                    <label class="custom-control-label" for="customCheck12">TEXT 12</label>
+                                </div>
+                                <div class="custom-control custom-checkbox col-6 col-md-3">
+                                    <input type="checkbox" name="list1" class="custom-control-input individual-1 showdiv2 select1_text13"
+                                        data-value="text13" value="text13" id="customCheck13">
+                                    <label class="custom-control-label" for="customCheck13">TEXT 13</label>
+                                </div>
+                                <div class="custom-control custom-checkbox col-6 col-md-3">
+                                    <input type="checkbox" name="list1" class="custom-control-input individual-1 showdiv2 select1_text14"
+                                        data-value="text14" value="text14" id="customCheck14">
+                                    <label class="custom-control-label" for="customCheck14">TEXT 14</label>
+                                </div>
+                                <div class="custom-control custom-checkbox col-6 col-md-3">
+                                    <input type="checkbox" name="list1" class="custom-control-input individual-1 showdiv2 select1_text15"
+                                        data-value="text15" value="text15" id="customCheck15">
+                                    <label class="custom-control-label" for="customCheck15">TEXT 15</label>
+                                </div>
+                                <!-- <div class="custom-control custom-checkbox col-6 col-md-3">
+                                    <input type="checkbox" name="list1" class="custom-control-input individual-1 showdiv2 select1_text16"
+                                        data-value="text-16" value="text8" id="customCheck16">
+                                    <label class="custom-control-label" for="customCheck16">TEXT 8</label>
+                                </div> -->
+                                <div class="custom-control custom-checkbox col-6 col-md-3">
+                                    <input type="checkbox" class="custom-control-input CheckedAll-1 showdiv2 select_textall1"
+                                        data-value="textall-1" value="All Selected" id="customChecked">
+                                    <label class="custom-control-label" for="customChecked">ALL</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header card-name" id="heading-3">
+                            <h5 class="mb-0">
+                                <a role="button" class="collapsed text-decoration-none head-name" data-toggle="collapse"
+                                    href="#collapse-3" aria-expanded="false" aria-controls="collapse-3">
+                                    DROPDOWN 3
+                                </a>
+                            </h5>
+                        </div>
+                        <div id="collapse-3" class="collapse border-0" data-parent="#accordion" aria-labelledby="heading-3">
+                            <div
+                                class="card-body card-text card-text d-flex justify-content-between flex-wrap dropdown-3">
+                                <div class="custom-control custom-checkbox col-6 col-md-3 ">
+                                    <input type="checkbox" name="list2" class="custom-control-input individual-2 showdiv3 select2_text17"
+                                        data-value="text17" value="text17" id="customCheck17">
+                                    <label class="custom-control-label" for="customCheck17">TEXT 17</label>
+                                </div>
+                                <div class="custom-control custom-checkbox col-6 col-md-3">
+                                    <input type="checkbox" name="list2" class="custom-control-input individual-2 showdiv3 select2_text18"
+                                        data-value="text18" value="text18" id="customCheck18">
+                                    <label class="custom-control-label" for="customCheck18">TEXT 18</label>
+                                </div>
+                                <div class="custom-control custom-checkbox col-6 col-md-3">
+                                    <input type="checkbox" name="list2" class="custom-control-input individual-2 showdiv3 select2_text19"
+                                        data-value="text19" value="text19" id="customCheck19">
+                                    <label class="custom-control-label" for="customCheck19">TEXT 19</label>
+                                </div>
+                                <div class="custom-control custom-checkbox col-6 col-md-3">
+                                    <input type="checkbox" name="list2" class="custom-control-input individual-2 showdiv3 select2_text20"
+                                        data-value="text20" value="text20" id="customCheck20">
+                                    <label class="custom-control-label" for="customCheck20">TEXT 20</label>
+                                </div>
+                                <div class="custom-control custom-checkbox col-6 col-md-3">
+                                    <input type="checkbox" name="list2" class="custom-control-input individual-2 showdiv3 select2_text21"
+                                        data-value="text21" value="text21" id="customCheck21">
+                                    <label class="custom-control-label" for="customCheck21">TEXT 21</label>
+                                </div>
+                                <div class="custom-control custom-checkbox col-6 col-md-3">
+                                    <input type="checkbox" name="list2" class="custom-control-input individual-2 showdiv3 select2_text22"
+                                        data-value="text22" value="text22" id="customCheck22">
+                                    <label class="custom-control-label" for="customCheck22">TEXT 22</label>
+                                </div>
+                                <div class="custom-control custom-checkbox col-6 col-md-3">
+                                    <input type="checkbox" name="list2" class="custom-control-input individual-2 showdiv3 select2_text23"
+                                        data-value="text23" value="text23" id="customCheck23">
+                                    <label class="custom-control-label" for="customCheck23">TEXT 23</label>
+                                </div>
+                                <!-- <div class="custom-control custom-checkbox col-6 col-md-3">
+                                    <input type="checkbox" name="list2" class="custom-control-input individual-2 showdiv3 select2_text24"
+                                        data-value="text-24" value="text8" id="customCheck24">
+                                    <label class="custom-control-label" for="customCheck24">TEXT 8</label>
+                                </div> -->
+                                <div class="custom-control custom-checkbox col-6 col-md-3">
+                                    <input type="checkbox" class="custom-control-input CheckedAll-2  showdiv3 select_textall2"
+                                        data-value="textall-2" value="All Selected" id="customCheck">
+                                    <label class="custom-control-label" for="customCheck">ALL</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                 </div>
+            </div>
+            <div class="col-md-4 col-12 DD">
+                <!-- <div class="dropdown1 col-12  cursor " id="Display-Div1"> -->
+                    <div class="col-12 px-0 mb-5">
+                    <!-- <h4 class="text-white bgcolor mb-0 ">DROPDOWN 1 DATA</h4> -->
+                    <div id="Disp1" class="d-flex flex-wrap  ">  
+                        
+                    </div>
+                    <!-- </div> -->
+                </div>
+                <!-- <div class="dropdown2 col-12 cursor " id="Display-Div2"> -->
+                        <div class="col-12 px-0 mb-5">
+                        <!-- <h4 class="text-white bgcolor mb-0 col-12">DROPDOWN 2 DATA</h4> -->
+                    <div id="Disp2" class="d-flex flex-wrap   ">
+                  </div>
+                </div>
+                <!-- </div> -->
+                <!-- <div class="dropdown3 col-12   cursor " id="Display-Div3"> -->
+                        <div class="col-12 px-0 mb-5">
+                        <!-- <h4 class="text-white bgcolor mb-0 col-12">DROPDOWN 3 DATA</h4> -->
+                    <div id="Disp3" class="d-flex flex-wrap   ">
+                        </div>
+                    <!-- </div> -->
+                </div>
+            </div>
+            <div class="col-12">
+                <p id="errortext" class="text-danger font-weight-bold"></p>
+            </div>
+            <div class="col-12 d-flex justify-content-center py-4">
+                <div class="btn-expand ">
+                    <button type="button" id="submit-btn"><span id="hidetext">Submit</span></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script src="JQUERYJS.js"></script>
+
+</html>
