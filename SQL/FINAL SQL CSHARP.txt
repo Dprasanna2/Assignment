@@ -1,0 +1,1760 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.IO;
+using System.Text.RegularExpressions;
+using System.Configuration;
+using System.Data.SqlClient;
+using System.Data;
+namespace librarysystem
+{
+    class Program
+    {
+        public enum Main_Operation
+        {
+            Display_Books = 1, Display_Personal = 2, Issue_Books = 3, Registerd_User_List = 4, Return_Book = 5, Update = 6, Exit = 7
+        }
+
+        public enum Issue_Operation
+        {
+            New_User = 1, Existing_User = 2, Issued_Book_Details = 3,Back = 4
+        }
+
+        public enum Filter_Operation
+        {
+            Phone_Number = 1, Email_Address = 2, Gender = 3, City = 4, Display_Table = 5, Back = 6
+        }
+
+        public enum Update_Operation
+        {
+            Name = 1, City = 2, Phone_no = 3, EmailId = 4, Gender = 5, Back = 6
+        }
+
+        static void Main(string[] args)
+        {
+            Console.Clear();
+            //string output;
+            bool check = true;
+            SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["DBCS"].ConnectionString);
+            do
+            {
+               
+                Console.WriteLine("---------------LIBRARY MANAGEMENT SYSTEM----------------\n\n");
+                Console.WriteLine(" 1-Display Books \n 2-Display Customer Details \n 3-Book Issue Management \n 4-Filter Table \n 5-Return Book \n 6-Update Customer Table \n 7-Exit \n ENTER THE CHOICE YOU WANT!");
+                Enum.TryParse<Main_Operation>(Console.ReadLine().ToUpper(), out var operation);
+
+
+                switch (operation)
+                {
+                    case Main_Operation.Display_Books:
+                        LibrarySystem.DisplayBookTB(con);
+                        break;
+
+                    case Main_Operation.Display_Personal:
+                        LibrarySystem.DisplayPerson(con);
+                        break;
+
+                    case Main_Operation.Issue_Books:
+                        Console.Clear();
+                        bool repeat = false;
+                        do
+                        {
+
+                            Console.WriteLine(" 1.Register User \n 2.Issue Book \n 3.Issued Book Details \n 4.Back \n ENTER THE CHOICE YOU WANT!");
+                            Enum.TryParse<Issue_Operation>(Console.ReadLine().ToUpper(), out var Issue_book);
+
+                            switch (Issue_book)
+                            {
+                                case Issue_Operation.New_User:
+                                    LibrarySystem.Insert(con);
+                                    repeat = true;
+                                    break;
+
+                                case Issue_Operation.Existing_User:
+                                    LibrarySystem.DisplayPerson(con);
+                                    LibrarySystem.ExistingUser(con);
+                                    repeat = true;
+                                    break;
+
+                                case Issue_Operation.Issued_Book_Details:
+                                    
+                                    LibrarySystem.FilterAll(con);
+                                    repeat = true;
+                                    break;
+
+                                case Issue_Operation.Back:
+                                    Console.Clear();
+                                    repeat = false;
+                                    break;
+
+                                default:
+                                    Console.WriteLine("Invalid Choice Please enter valid choice!!! \n");
+                                    repeat = true;
+                                    break;
+                            }
+                        }
+                        while (repeat);
+                        break;
+
+                    //do
+                    //{
+                    //    Console.WriteLine("\nDO YOU WANT TO CONTINUE RUNNING OPERATION? YES/NO");
+                    //    output = Console.ReadLine().Trim().ToUpper();
+                    //    if (output != "YES" && output != "Y" && output != "NO" && output != "N")
+                    //    {
+                    //        Console.WriteLine("ERROR => ENTER VALID INPUT:");
+                    //        check = true;
+                    //    }
+                    //    else
+                    //    {
+                    //        check = false;
+                    //    }
+                    //}
+                    //while (check);
+
+
+                    case Main_Operation.Registerd_User_List:
+                        Console.Clear();
+                        bool back = false;
+                        do
+                        {
+                            Console.WriteLine("Search the user according to your choice!");
+                            Console.WriteLine(" 1.Phone No \n 2.Email Address \n 3.Gender \n 4.City \n 5.All Entries \n 6.Back \n ENTER THE CHOICE YOU WANT!");
+                            Enum.TryParse<Filter_Operation>(Console.ReadLine().ToUpper(), out var Display_Filter);
+
+                            switch (Display_Filter)
+                            {
+                                case Filter_Operation.Phone_Number:
+                                    LibrarySystem.FilterPhone(con);
+                                    back = true;
+
+                                    break;
+                                case Filter_Operation.Email_Address:
+                                    LibrarySystem.FilterEmail(con);
+                                    back = true;
+                                    break;
+                                case Filter_Operation.Gender:
+                                    LibrarySystem.FilterGender(con);
+                                    back = true;
+                                    break;
+                                case Filter_Operation.City:
+                                    LibrarySystem.FilterCity(con);
+                                    back = true;
+                                    break;
+                                case Filter_Operation.Display_Table:
+                                    LibrarySystem.FilterAll(con);
+                                    back = true;
+                                    break;
+                                case Filter_Operation.Back:
+                                    back = false;
+                                    break;
+                                default:
+                                    Console.WriteLine("Invalid Choice Please enter valid choice!!! \n");
+                                    back = true;
+                                    break;
+                            }
+                        }
+                        while (back);
+                        break;
+
+                    //do
+                    //{
+                    //    Console.WriteLine("\nDO YOU WANT TO CONTINUE FILTER OPERATION? YES/NO");
+                    //    output = Console.ReadLine().ToUpper();
+                    //    if (output != "YES" && output != "Y" && output != "NO" && output != "N")
+                    //    {
+                    //        Console.WriteLine("ERROR => ENTER VALID INPUT:");
+                    //        check = true;
+                    //    }
+                    //    else
+                    //    {
+                    //        check = false;
+                    //    }
+                    //}
+                    //while (check);
+
+
+
+                    case Main_Operation.Return_Book:
+                        LibrarySystem.FilterAll(con);
+                        LibrarySystem.ReturnBook(con);
+                        break;
+                    case Main_Operation.Update:
+                        Console.Clear();
+                        bool main = false;
+                        do
+                        {
+                            Console.WriteLine();
+                            Console.WriteLine("Update the user details according to your choice!");
+                            Console.WriteLine(" 1.Name \n 2.City \n 3.Phone No \n 4.Email Id \n 5.Gender \n 6.Back \n ENTER THE CHOICE YOU WANT!");
+                            Enum.TryParse<Update_Operation>(Console.ReadLine().ToUpper(), out var UpdateTB);
+
+                            switch (UpdateTB)
+                            {
+                                case Update_Operation.Name:
+                                    LibrarySystem.DisplayPerson(con);
+                                    LibrarySystem.UpdateName(con);
+                                    main = true;
+                                    break;
+                                case Update_Operation.City:
+                                    LibrarySystem.DisplayPerson(con);
+                                    LibrarySystem.UpdateCity(con);
+                                    main = true;
+                                    break;
+                                case Update_Operation.Phone_no:
+                                    LibrarySystem.DisplayPerson(con);
+                                    LibrarySystem.UpdatePhone(con);
+                                    main = true;
+                                    break;
+                                case Update_Operation.EmailId:
+                                    LibrarySystem.DisplayPerson(con);
+                                    LibrarySystem.UpdateEmail(con);
+                                    main = true;
+                                    break;
+                                case Update_Operation.Gender:
+                                    LibrarySystem.DisplayPerson(con);
+                                    LibrarySystem.UpdateGender(con);
+                                    main = true;
+                                    break;
+                                case Update_Operation.Back:
+                                    main = false;
+                                    break;
+                                default:
+                                    Console.WriteLine("Invalid Choice Please enter valid choice!!! ");
+                                    main = true;
+                                    break;
+                            }
+                        }
+                        while (main);
+                        break;
+                    //do
+                    //{
+                    //    Console.WriteLine("\nDO YOU WANT TO CONTINUE UPDATE OPERATION? YES/NO");
+                    //    output = Console.ReadLine().ToUpper().Trim();
+                    //    if (output != "YES" && output != "Y" && output != "NO" && output != "N")
+                    //    {
+                    //        Console.WriteLine("ERROR => ENTER VALID INPUT:");
+                    //        check = true;
+                    //    }
+                    //    else
+                    //    {
+                    //        check = false;
+                    //    }
+
+                    //}
+                    //while (check);
+
+
+
+                    case Main_Operation.Exit:
+                        System.Environment.Exit(0);
+                        break;
+                    default:
+                        Console.WriteLine("Invalid Choice Please enter valid choice!!! ");
+                        check = true;
+                        break;
+                }
+
+
+                //do
+                //{
+                //    Console.WriteLine("\nDO YOU WANT TO CONTINUE MAIN OPERATION? YES/NO");
+                //    output = Console.ReadLine().ToUpper().Trim();
+                //    if (output != "YES" && output != "Y" && output != "NO" && output != "N")
+                //    {
+                //        Console.WriteLine("ERROR => ENTER VALID INPUT:");
+                //        check = true;
+                //    }
+                //    else
+                //    {
+                //        check = false;
+                //    }
+                //}
+                //while (check);
+            }
+            while (check);
+        }
+    }
+    class LibrarySystem
+    {
+        //Function for Insert value
+        public static void Insert(SqlConnection con)
+        {
+            bool check = false;
+            Regex rg = new Regex(@"^[a-zA-Z]+$");
+            Regex rg1 = new Regex(@"^[a-zA-Z ]+$");
+            Regex regnum = new Regex("^[789][0-9]{1,9}$");
+            Regex regmail = new Regex(@"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,3}$");
+            con.Open();
+            SqlCommand cmd = new SqlCommand("InsertUpdate", con);
+            cmd.CommandType = System.Data.CommandType.StoredProcedure;
+            cmd.Parameters.AddWithValue("@stmt", "insert");
+            do
+            {
+                check = true;
+                Console.WriteLine("Enter the name of the person:\n");
+                string name = Console.ReadLine().Trim();
+                if (!rg.IsMatch(name))
+                {
+                    Console.WriteLine("ERROR => PLEASE ENTER PROPER  NAME");
+                }
+                else if ((name).ToLower().Equals("null"))
+                {
+                    Console.WriteLine("ERROR => THE INPUT SHOULD BE NOT BE NULL");
+                }
+                else if (string.IsNullOrWhiteSpace(name))
+                {
+                    Console.WriteLine("ERROR => THE NAME SHOULD BE NOT BE EMPTY");
+                }
+                else
+                {
+                    cmd.Parameters.AddWithValue("@user", name);
+                    check = false;
+                }
+            }
+            while (check);
+            do
+            {
+                Console.WriteLine("Enter the CITY:\n");
+                string city = Console.ReadLine().Trim();
+                if (!rg1.IsMatch(city))
+                {
+                    Console.WriteLine("ERROR => PLEASE ENTER PROPER CITY NAME");
+                    check = true;
+                }
+                else if ((city).ToLower() == "null")
+                {
+                    Console.WriteLine("ERROR => THE INPUT SHOULD BE NOT BE NULL");
+                    check = true;
+                }
+                else if (string.IsNullOrWhiteSpace(city))
+                {
+                    Console.WriteLine("ERROR => THE CITY NAME SHOULD BE NOT BE EMPTY");
+                    check = true;
+                }
+                else
+                {
+                    cmd.Parameters.AddWithValue("@City", city);
+                    check = false;
+                }
+            } while (check);
+
+            do
+            {
+                check = true;
+                Console.WriteLine("Enter the PhoneNo:\n");
+                string PhoneNo = Console.ReadLine().Trim();
+                if (string.IsNullOrWhiteSpace(PhoneNo))
+                {
+                    Console.WriteLine("ERROR => THE PHONE NUMBER SHOULD BE NOT BE EMPTY");
+                }
+                else if (PhoneNo.Length != 10)
+                {
+                    Console.WriteLine("ERROR =>ENTER THE VALID NUMBER");
+                }
+                else if (!regnum.IsMatch(PhoneNo))
+                {
+                    Console.WriteLine("ERROR => ENTER VALID PHONE NUMBER");
+                }
+                else
+                {
+                    if (!ExistPhone(con, PhoneNo))
+                    {
+                        check = true;
+
+                    }
+                    else
+                    {
+                        cmd.Parameters.AddWithValue("@Phone", PhoneNo);
+                        check = false;
+
+                    }
+                }
+
+
+            }
+            while (check);
+
+            do
+            {
+                check = true;
+                Console.WriteLine("Enter the MAIL ID:\n");
+                string EmailID = Console.ReadLine().Trim();
+                if (!regmail.IsMatch(EmailID))
+                {
+                    Console.WriteLine("ERROR => PLEASE ENTER PROPER EMAIL ID");
+                }
+
+                else if ((EmailID).ToLower() == "null")
+                {
+                    Console.WriteLine("ERROR => THE INPUT SHOULD BE NOT BE NULL");
+                }
+                else if (string.IsNullOrWhiteSpace(EmailID))
+                {
+                    Console.WriteLine("ERROR => THE EMAIL ID NAME SHOULD BE NOT BE EMPTY");
+                }
+                else
+                {
+                    if (!ExistEmail(con, EmailID))
+                    {
+                        check = true;
+                    }
+                    else
+                    {
+                        cmd.Parameters.AddWithValue("@Emailid", EmailID);
+                        check = false;
+                    }
+                }
+            } while (check);
+
+            do
+            {
+                Console.WriteLine("Enter the Gender:\n");
+                string Gender = Console.ReadLine().ToLower().Trim();
+                if (!Gender.Equals("male") && !Gender.Equals("female"))
+                {
+                    Console.WriteLine("ERROR => THE GENDER IS NOT PROPER");
+                    check = true;
+                }
+                else
+                {
+                    cmd.Parameters.AddWithValue("@Gender", Gender);
+                    check = false;
+                    break;
+                }
+            }
+            while (check);
+            con.Open();
+            cmd.ExecuteNonQuery();
+            con.Close();
+            Console.WriteLine("USER REGISTERED SUCCESFULLY!! \n");
+            do
+            {
+                Console.WriteLine("Do you want to issue the book? Yes/No");
+                string result = Console.ReadLine().Trim().ToUpper();
+                if (result.Equals("YES") || result.Equals("Y"))
+                {
+                    DisplayBookTB(con);
+                    ExistingUser(con);
+                    check = false;
+                }
+                else if (result != "YES" && result != "Y" && result != "NO" && result != "N")
+                {
+                    Console.WriteLine("ERROR => ENTER VALID INPUT:");
+                    check = true;
+                }
+                else
+                {
+                    check = true;
+                    break;
+                }
+            }
+            while (check);
+
+        }
+        //function for searching existing user and allow to issue book
+        public static void ExistingUser(SqlConnection con)
+        {
+            int id = 0;
+            string rtn_date = null;
+            bool check = false;
+
+            int bookNo = 0;
+            Regex regnum = new Regex("^[789][0-9]{1,9}$");
+
+            do
+            {
+                SqlCommand cmd = new SqlCommand("InsertUpdate", con);
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@stmt", "issuebook");
+                string PhoneNo;
+                check = true;
+                Console.WriteLine("Enter the PhoneNo:\n");
+                PhoneNo = Console.ReadLine();
+                if (regnum.IsMatch(PhoneNo))
+                {
+                    cmd.Parameters.AddWithValue("@Phone", Convert.ToInt64(PhoneNo));
+
+                    con.Open();
+                    SqlDataReader reader = cmd.ExecuteReader();
+
+                    if (reader.HasRows)
+                    {
+                        while (reader.Read())
+                        {
+                            for (int i = 0; i < reader.FieldCount; i++)
+                            {
+                                id = Convert.ToInt32(reader.GetValue(i).ToString());
+                            }
+                        }
+                        con.Close();
+                        Console.WriteLine("USER EXIST!! \n");
+
+                        SqlCommand cmmd = new SqlCommand("InsertUpdate", con);
+                        cmmd.CommandType = System.Data.CommandType.StoredProcedure;
+                        cmmd.Parameters.AddWithValue("@stmt", "ReIssue");
+                        cmmd.Parameters.AddWithValue("@Phone", PhoneNo);
+                        con.Open();
+                        SqlDataReader rdr = cmmd.ExecuteReader();
+                        if (rdr.HasRows)
+                        {
+                            con.Close();
+                            Console.WriteLine("Please return previous book");
+                            check = true;
+                        }
+                        else
+                        {
+                            DisplayBookTB(con);
+                            bookNo = GetBook(con);
+                            if (bookNo > 0)
+                            {
+
+                                Console.WriteLine("BOOK IS AVIALABLE");
+                                SqlCommand cd = new SqlCommand("InsertUpdate", con);
+                                cd.CommandType = System.Data.CommandType.StoredProcedure;
+                                cd.Parameters.AddWithValue("@stmt", "UpdateCount");
+                                cd.Parameters.AddWithValue("@bookid", bookNo);
+                                con.Open();
+                                cd.ExecuteNonQuery();
+                                con.Close();
+                                rtn_date = ValidDateTest(con);
+                                SqlCommand c = new SqlCommand("InsertUpdate", con);
+                                c.CommandType = System.Data.CommandType.StoredProcedure;
+                                c.Parameters.AddWithValue("@stmt", "BookIssued");
+                                con.Open();
+                                c.Parameters.AddWithValue("@P_id", id);
+                                c.Parameters.AddWithValue("@B_id", bookNo);
+                                c.Parameters.AddWithValue("@Return_date", rtn_date.Substring(0, 10));
+                                c.ExecuteNonQuery();
+                                con.Close();
+                                break;
+                            }
+                        }
+
+                    }
+                    else
+                    {
+                        Console.WriteLine("USER DOES NOT EXISTS!!");
+                    }
+                    con.Close();
+                }
+                else if (string.IsNullOrWhiteSpace(PhoneNo))
+                {
+                    Console.WriteLine("ERROR => THE PHONE NUMBER SHOULD BE NOT BE EMPTY");
+                }
+                else if (!regnum.IsMatch(PhoneNo))
+                {
+                    Console.WriteLine("ERROR => ENTER VALID PHONE NUMBER");
+                }
+                else if (PhoneNo.Length != 10)
+                {
+                    Console.WriteLine("ERROR =>ENTER THE VALID NUMBER");
+                    break;
+                }
+            } while (check);
+        }
+
+        //function to check the validation of date
+        public static string ValidDateTest(SqlConnection con)
+        {
+            //^(0[1 - 9] | 1[0 - 2])\/ (0[1 - 9] | 1\d | 2\d | 3[01])\/ (20)\d{ 2}$
+            //(\b(0?[1-9]|[12]\d|30|31)[^\w\d\r\n:](0?[1-9]|1[0-2])[^\w\d\r\n:](\d{4}|\d{2})\b)|(\b(0?[1-9]|1[0-2])[^\w\d\r\n:](0?[1-9]|[12]\d|30|31)[^\w\d\r\n:](\d{4}|\d{2})\b)|((\d{4}|\d{2})\b[^\w\d\r\n:]\b(0?[1-9]|[12]\d|30|31)[^\w\d\r\n:](0?[1-9]|1[0-2])[\w\d\r\n:])
+            Regex rexdate = new Regex(@"^([1-9]|1[0-2])\/([1-9]|1\d|2\d|3[01])\/(20)\d{2}$");
+            var current_date = DateTime.Now;
+            string val = null;
+            bool check = true;
+            do
+            {
+                Console.WriteLine("Enter the Return Date In Format(MM/DD/YYYY):\n");
+                string rtr = Console.ReadLine().Trim();
+                if (string.IsNullOrWhiteSpace(rtr))
+                {
+                    Console.WriteLine("DATE SHOULD NOT BE EMPTY");
+                    check = true;
+
+                }
+                else if (!rexdate.IsMatch(rtr))
+                {
+                    Console.WriteLine("Date should be in proper format");
+                    check = true;
+
+                }
+                else
+                {
+                    DateTime Return_date = Convert.ToDateTime(rtr);
+                    if (Return_date < current_date)
+                    {
+                        Console.WriteLine("You have entered past date as return date!");
+                        check = true;
+                    }
+                    else
+                    {
+                        Console.WriteLine("BOOK IS ISSUED!! \n");
+                        val = Convert.ToString(Return_date);
+                        check = false;
+                    }
+                }
+            }
+            while (check);
+            return val;
+        }
+
+        //function to display book details table
+        public static void DisplayBookTB(SqlConnection con)
+        {
+            con.Close();
+            SqlCommand cmmd = new SqlCommand("InsertUpdate", con);
+            cmmd.CommandType = System.Data.CommandType.StoredProcedure;
+            cmmd.Parameters.AddWithValue("@stmt", "DisplayBook");
+            con.Open();
+            SqlDataReader reader = cmmd.ExecuteReader();
+            string[] col = new string[4];
+            string[] row = new string[4];
+            for (int i = 0; i < reader.FieldCount; i++)
+            {
+                col[i] = reader.GetName(i).ToString();
+            }
+            var a = new TablePrinter(col);
+
+            while (reader.Read())
+            {
+
+                for (int i = 0; i < reader.FieldCount; i++)
+                {
+                    row[i] = reader.GetValue(i).ToString();
+                }
+                a.AddRow(row);
+
+            }
+
+            a.Print();
+            con.Close();
+
+        }
+
+        //function to display personal detail table
+        public static void DisplayPerson(SqlConnection con)
+        {
+
+            SqlCommand cmd = new SqlCommand("InsertUpdate", con);
+            cmd.CommandType = System.Data.CommandType.StoredProcedure;
+            cmd.Parameters.AddWithValue("@stmt", "DisplayPerson");
+            con.Open();
+            SqlDataReader reader = cmd.ExecuteReader();
+            if (reader.HasRows)
+            {
+                string[] col = new string[6];
+                string[] row = new string[6];
+                for (int i = 0; i < reader.FieldCount; i++)
+                {
+                    col[i] = reader.GetName(i).ToString();
+                }
+                var a = new TablePrinter(col);
+                Console.WriteLine();
+                while (reader.Read())
+                {
+
+                    for (int i = 0; i < reader.FieldCount; i++)
+                    {
+                        row[i] = reader.GetValue(i).ToString();
+                    }
+                    a.AddRow(row);
+
+                }
+                Console.WriteLine();
+                a.Print();
+                con.Close();
+
+            }
+            else
+            {
+                Console.WriteLine("NO USER REGISTERED!");
+
+            }
+        
+
+        }
+
+        //function to issue book
+        public static int GetBook(SqlConnection con)
+        {
+            bool check = true;
+            int val = 0;
+            Regex reg = new Regex("[0-9]*$");
+            do
+            {
+                SqlCommand cmd = new SqlCommand("InsertUpdate", con);
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                Console.WriteLine("Enter the id of the books:");
+                string Id = Console.ReadLine();
+                if (reg.IsMatch(Id))
+                {
+                    con.Close();
+                    cmd.Parameters.AddWithValue("@stmt", "BookNo");
+                    cmd.Parameters.AddWithValue("@bookid", Id);
+                    con.Open();
+                    SqlDataReader reader = cmd.ExecuteReader();
+                    if (reader.HasRows)
+                    {
+                        con.Close();
+                        int BookId = Convert.ToInt32(Id);
+
+                        if (BookCount(con, BookId))
+                        {
+
+                            SqlCommand cmmd = new SqlCommand("InsertUpdate", con);
+                            cmmd.CommandType = System.Data.CommandType.StoredProcedure;
+                            con.Open();
+                            cmmd.Parameters.AddWithValue("@stmt", "GetBook");
+                            cmmd.Parameters.AddWithValue("@bookid", BookId);
+                            cmmd.Parameters.Add("@GetBook", SqlDbType.Int, 100);
+                            cmmd.Parameters["@GetBook"].Direction = ParameterDirection.Output;
+                            cmmd.ExecuteReader();
+                            con.Close();
+                            val = Convert.ToInt32(cmmd.Parameters["@GetBook"].Value.ToString());
+                            break;
+                        }
+                        else
+                        {
+                            check = true;
+                            break;
+                        }
+
+                    }
+                    else
+                    {
+                        Console.WriteLine("The Book is not present in the list!");
+                        check = true;
+                    }
+
+                }
+                else if (!reg.IsMatch(Id))
+                {
+                    Console.WriteLine("Enter valid input");
+                }
+                else if (string.IsNullOrWhiteSpace(Id))
+                {
+                    Console.WriteLine("Input should not be empty");
+                    return val;
+                }
+
+            } while (check);
+            return val;
+        }
+
+        //function to return book
+        public static void ReturnBook(SqlConnection con)
+        {
+            Regex regnum = new Regex("^[789][0-9]{1,9}$");
+
+
+            bool check = true;
+            do
+            {
+                con.Close();
+                SqlCommand cmd = new SqlCommand("InsertUpdate", con);
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@stmt", "return");
+                string PhoneNo = null;
+                Console.WriteLine("Enter the PhoneNo:\n");
+                PhoneNo = Console.ReadLine();
+                if (regnum.IsMatch(PhoneNo))
+                {
+                    cmd.Parameters.AddWithValue("@Phone", Convert.ToInt64(PhoneNo));
+                    con.Open();
+                    SqlDataReader reader = cmd.ExecuteReader();
+
+                    if (reader.HasRows)
+                    {
+                        con.Close();
+                        Console.WriteLine("Enter the BookID you have to return:\n");
+                        string BookID = Console.ReadLine();
+                        SqlCommand cmmd = new SqlCommand("InsertUpdate", con);
+                        cmmd.CommandType = System.Data.CommandType.StoredProcedure;
+                        cmmd.Parameters.AddWithValue("@stmt", "CheckValid");
+                        cmmd.Parameters.AddWithValue("@Phone", PhoneNo);
+                        cmmd.Parameters.AddWithValue("@ReturnBookId", Convert.ToInt32(BookID));
+                        con.Open();
+                        SqlDataReader rdr = cmmd.ExecuteReader();
+                        if (rdr.HasRows)
+                        {
+                            con.Close();
+                            SqlCommand cmmmd = new SqlCommand("InsertUpdate", con);
+                            cmmmd.CommandType = System.Data.CommandType.StoredProcedure;
+                            cmmmd.Parameters.AddWithValue("@stmt", "ReturnBook");
+                            cmmmd.Parameters.AddWithValue("@ReturnBookId", Convert.ToInt32(BookID));
+                            con.Open();
+                            cmmmd.ExecuteNonQuery();
+                            con.Close();
+                            Console.WriteLine("Thankyou for returning book!");
+                            UpdateStatus(con, PhoneNo);
+                            check = false;
+                            break;
+                        }
+                        else
+                        {
+                            con.Close();
+                            Console.WriteLine("You Entered Wrong Book ID Or You Have Already Submitted The Book");
+                            check = true;
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine("USER NOT EXIST PLEASE REGISTER!");
+                    }
+                }
+                else if (PhoneNo.Length != 10)
+                {
+                    Console.WriteLine("ERROR =>ENTER THE VALID NUMBER");
+                    check = true;
+                }
+                else if (string.IsNullOrWhiteSpace(PhoneNo))
+                {
+                    Console.WriteLine("ERROR => THE PHONE NUMBER SHOULD BE NOT BE EMPTY");
+                    check = true;
+                    //break;
+                }
+                else if (!regnum.IsMatch(PhoneNo))
+                {
+                    Console.WriteLine("ERROR => ENTER VALID PHONE NUMBER");
+                    check = true;
+                    //break;
+                }
+            }
+            while (check);
+        }
+
+        //function to update the status of book submitted/not submitted
+        public static void UpdateStatus(SqlConnection con, string PhoneNo)
+        {
+
+            SqlCommand cd = new SqlCommand("InsertUpdate", con);
+            cd.CommandType = System.Data.CommandType.StoredProcedure;
+            cd.Parameters.AddWithValue("@stmt", "UpdateStatus");
+            cd.Parameters.AddWithValue("@Phone", Convert.ToInt64(PhoneNo));
+            con.Open();
+            cd.ExecuteNonQuery();
+            con.Close();
+        }
+
+        //function for search values using phone no
+        public static void FilterPhone(SqlConnection con)
+        {
+            Regex regnum = new Regex("[0-9]$");
+            bool check = true;
+            do
+            {
+
+                Console.WriteLine("Enter the PhoneNo:\n");
+                string PhoneNo = Console.ReadLine().Trim();
+                if (regnum.IsMatch(PhoneNo))
+                {
+                    SqlCommand command = new SqlCommand("InsertUpdate", con);
+                    command.CommandType = System.Data.CommandType.StoredProcedure;
+                    command.Parameters.AddWithValue("@stmt", "FilterPhone");
+                    command.Parameters.AddWithValue("@Phone", PhoneNo);
+                    con.Open();
+                    SqlDataReader reader = command.ExecuteReader();
+                    if (reader.HasRows)
+                    {
+                        string[] col = new string[9];
+                        string[] row = new string[9];
+                        for (int i = 0; i < reader.FieldCount; i++)
+                        {
+                            col[i] = reader.GetName(i).ToString();
+                        }
+                        var a = new TablePrinter(col);
+
+                        while (reader.Read())
+                        {
+                            for (int i = 0; i < reader.FieldCount; i++)
+                            {
+                                row[i] = reader.GetValue(i).ToString();
+                            }
+                            a.AddRow(row);
+
+                        }
+                        a.Print();
+                    }
+                    else
+                    {
+                        Console.WriteLine("User Not Exist");
+                    }
+                    con.Close();
+
+
+
+
+                    check = false;
+                    break;
+                }
+                foreach (char a in PhoneNo)
+                {
+                    if (char.IsLetter(a))
+                    {
+                        Console.WriteLine("ERROR => THE INPUT SHOULD NOT CONTAIN LETTERS");
+                        break;
+                    }
+                    if (PhoneNo.Length != 10)
+                    {
+                        Console.WriteLine("ERROR =>ENTER THE VALID NUMBER");
+                        break;
+                    }
+                }
+                if (string.IsNullOrWhiteSpace(PhoneNo))
+                {
+                    Console.WriteLine("ERROR => THE PHONE NUMBER SHOULD BE NOT BE EMPTY");
+                }
+                else if (!regnum.IsMatch(PhoneNo))
+                {
+                    Console.WriteLine("ERROR => ENTER VALID PHONE NUMBER");
+                }
+            } while (check);
+        }
+
+        //function for search values using email ID
+        public static void FilterEmail(SqlConnection con)
+        {
+            Regex regmail = new Regex(@"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,3}$");
+            bool check = true;
+            do
+            {
+                Console.WriteLine("Enter the MAIL ID:\n");
+                string EmailID = Console.ReadLine().Trim();
+                if (!regmail.IsMatch(EmailID))
+                {
+                    Console.WriteLine("ERROR => PLEASE ENTER PROPER EMAIL ID");
+                }
+                else if ((EmailID).ToLower() == "null")
+                {
+                    Console.WriteLine("ERROR => THE INPUT SHOULD BE NOT BE NULL");
+                }
+                else if (string.IsNullOrWhiteSpace(EmailID))
+                {
+                    Console.WriteLine("ERROR => THE EMAIL ID NAME SHOULD BE NOT BE EMPTY");
+                }
+                else
+                {
+                    SqlCommand command = new SqlCommand("InsertUpdate", con);
+                    command.CommandType = System.Data.CommandType.StoredProcedure;
+                    command.Parameters.AddWithValue("@stmt", "FilterEmail");
+                    command.Parameters.AddWithValue("@Emailid", EmailID);
+                    con.Open();
+                    SqlDataReader reader = command.ExecuteReader();
+                    if (reader.HasRows)
+                    {
+                        string[] col = new string[9];
+                        string[] row = new string[9];
+                        for (int i = 0; i < reader.FieldCount; i++)
+                        {
+                            col[i] = reader.GetName(i).ToString();
+                        }
+                        var a = new TablePrinter(col);
+
+                        while (reader.Read())
+                        {
+                            for (int i = 0; i < reader.FieldCount; i++)
+                            {
+                                row[i] = reader.GetValue(i).ToString();
+                            }
+                            a.AddRow(row);
+                        }
+                        a.Print();
+                    }
+                    else
+                    {
+                        Console.WriteLine("User Not Exist");
+                    }
+                    con.Close();
+
+                    check = false;
+                    break;
+                }
+            } while (check);
+
+        }
+
+        //function for search values using Gender
+        public static void FilterGender(SqlConnection con)
+        {
+            bool check = true;
+            do
+            {
+                Console.WriteLine("Enter the Gender:\n");
+                string Gender = Console.ReadLine().ToLower().Trim();
+                if (!Gender.Equals("male") && !Gender.Equals("female"))
+                {
+                    Console.WriteLine("ERROR => THE GENDER IS NOT PROPER");
+                    check = true;
+                }
+                else
+                {
+                    SqlCommand command = new SqlCommand("InsertUpdate", con);
+                    command.CommandType = System.Data.CommandType.StoredProcedure;
+                    command.Parameters.AddWithValue("@stmt", "FilterGender");
+                    command.Parameters.AddWithValue("@Gender", Gender);
+                    con.Open();
+                    SqlDataReader reader = command.ExecuteReader();
+                    if (reader.HasRows)
+                    {
+                        string[] col = new string[9];
+                        string[] row = new string[9];
+                        for (int i = 0; i < reader.FieldCount; i++)
+                        {
+                            col[i] = reader.GetName(i).ToString();
+                        }
+                        var a = new TablePrinter(col);
+
+                        while (reader.Read())
+                        {
+                            for (int i = 0; i < reader.FieldCount; i++)
+                            {
+                                row[i] = reader.GetValue(i).ToString();
+                            }
+                            a.AddRow(row);
+                        }
+                        a.Print();
+                    }
+                    else
+                    {
+                        Console.WriteLine("User Not Exist");
+                    }
+                    con.Close();
+                    check = false;
+                    break;
+                }
+
+            } while (check);
+
+
+        }
+
+        //function for search value using city
+        public static void FilterCity(SqlConnection con)
+        {
+            Regex rg1 = new Regex(@"^[a-zA-Z ]+$");
+            bool check = true;
+            do
+            {
+                Console.WriteLine("Enter the CITY:\n");
+                string city = Console.ReadLine().ToLower().Trim();
+                if (!rg1.IsMatch(city))
+                {
+                    Console.WriteLine("ERROR => PLEASE ENTER PROPER CITY NAME");
+                    check = true;
+                }
+                else if ((city).ToLower() == "null")
+                {
+                    Console.WriteLine("ERROR => THE INPUT SHOULD BE NOT BE NULL");
+                    check = true;
+                }
+                else if (string.IsNullOrWhiteSpace(city))
+                {
+                    Console.WriteLine("ERROR => THE CITY NAME SHOULD BE NOT BE EMPTY");
+                    check = true;
+                }
+                else
+                {
+                    SqlCommand command = new SqlCommand("InsertUpdate", con);
+                    command.CommandType = System.Data.CommandType.StoredProcedure;
+                    command.Parameters.AddWithValue("@stmt", "FilterCity");
+                    command.Parameters.AddWithValue("@City", city);
+                    con.Open();
+                    SqlDataReader reader = command.ExecuteReader();
+                    if (reader.HasRows)
+                    {
+                        string[] col = new string[9];
+                        string[] row = new string[9];
+                        for (int i = 0; i < reader.FieldCount; i++)
+                        {
+                            col[i] = reader.GetName(i).ToString();
+                        }
+                        var a = new TablePrinter(col);
+
+                        while (reader.Read())
+                        {
+
+                            for (int i = 0; i < reader.FieldCount; i++)
+                            {
+                                row[i] = reader.GetValue(i).ToString();
+                            }
+                            a.AddRow(row);
+                        }
+                        a.Print();
+                    }
+                    else
+                    {
+                        Console.WriteLine("User Not Exist");
+                    }
+                    con.Close();
+                    check = false;
+                }
+            } while (check);
+        }
+
+        //function for display all values
+        public static void FilterAll(SqlConnection con)
+        {
+            SqlCommand command = new SqlCommand("InsertUpdate", con);
+            command.CommandType = System.Data.CommandType.StoredProcedure;
+            command.Parameters.AddWithValue("@stmt", "FilterAll");
+            con.Open();
+            SqlDataReader reader = command.ExecuteReader();
+            if (reader.HasRows)
+            {
+                string[] col = new string[11];
+                string[] row = new string[11];
+                for (int i = 0; i < reader.FieldCount; i++)
+                {
+                    col[i] = reader.GetName(i).ToString();
+                }
+                var a = new TablePrinter(col);
+
+                while (reader.Read())
+                {
+
+                    for (int i = 0; i < reader.FieldCount; i++)
+                    {
+                        row[i] = reader.GetValue(i).ToString();
+                    }
+                    a.AddRow(row);
+
+                }
+                a.Print();
+                con.Close();
+            }
+            else
+            {
+                Console.WriteLine("\nNo Record Present");
+
+            }
+        }
+
+        //function to check the count of the book
+        public static bool BookCount(SqlConnection con, int BookId)
+        {
+            bool val = false;
+            SqlCommand cd = new SqlCommand("InsertUpdate", con);
+            cd.CommandType = System.Data.CommandType.StoredProcedure;
+            cd.Parameters.AddWithValue("@stmt", "BookCount");
+            con.Open();
+            cd.Parameters.AddWithValue("@bookid", BookId);
+            SqlDataReader reader = cd.ExecuteReader();
+            while (reader.Read())
+            {
+                for (int i = 0; i < reader.FieldCount; i++)
+                {
+                    if (Convert.ToInt32(reader.GetValue(i)) > 0)
+                    {
+
+                        val = true;
+                        break;
+                    }
+                    else
+                    {
+                        Console.WriteLine("No Stock is Available Issue another book");
+                        val = false;
+
+                    }
+                }
+            }
+            con.Close();
+            return val;
+        }
+
+        //function to check if phone no already exists
+        public static bool ExistPhone(SqlConnection con, string PhoneNo)
+        {
+            con.Close();
+            SqlCommand cmd = new SqlCommand("InsertUpdate", con);
+            cmd.CommandType = System.Data.CommandType.StoredProcedure;
+            cmd.Parameters.AddWithValue("@stmt", "ExistPhone");
+            cmd.Parameters.AddWithValue("@Phone", PhoneNo);
+            con.Open();
+            SqlDataReader reader = cmd.ExecuteReader();
+            if (reader.HasRows)
+            {
+                Console.WriteLine("Phone Number Already Exists");
+                con.Close();
+                return false;
+            }
+            else
+            {
+                con.Close();
+                return true;
+            }
+        }
+
+        //function to check if email address already exists
+        public static bool ExistEmail(SqlConnection con, string EmailID)
+        {
+            con.Close();
+            SqlCommand cmd = new SqlCommand("InsertUpdate", con);
+            cmd.CommandType = System.Data.CommandType.StoredProcedure;
+            cmd.Parameters.AddWithValue("@stmt", "ExistEmail");
+            cmd.Parameters.AddWithValue("@Emailid", EmailID);
+            con.Open();
+            SqlDataReader reader = cmd.ExecuteReader();
+            if (reader.HasRows)
+            {
+                con.Close();
+                Console.WriteLine("Email Address Already Exists");
+
+                return false;
+            }
+            else
+            {
+                con.Close();
+                return true;
+            }
+        }
+
+        //function to update the name of the person
+        public static void UpdateName(SqlConnection con)
+        {
+            bool check = true;
+            Regex num = new Regex("[1-9]$");
+            Regex rg = new Regex(@"^[a-zA-Z]+$");
+            do
+            {
+                con.Close();
+                SqlCommand cmd = new SqlCommand("InsertUpdate", con);
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@stmt", "checkid");
+                Console.WriteLine("Enter the Id");
+                string id = Console.ReadLine().Trim();
+                if (num.IsMatch(id))
+                {
+                    con.Open();
+                    cmd.Parameters.AddWithValue("@id", Convert.ToInt32(id));
+                    SqlDataReader reader = cmd.ExecuteReader();
+                    if (reader.HasRows)
+                    {
+                        con.Close();
+                        Console.WriteLine("THE ID IS PRESENT");
+                        SqlCommand cmmd = new SqlCommand("InsertUpdate", con);
+                        cmmd.CommandType = System.Data.CommandType.StoredProcedure;
+                        cmmd.Parameters.AddWithValue("@stmt", "UpdateRow");
+                        con.Open();
+                        do
+                        {
+                            Console.WriteLine("Enter the name to update");
+                            string name = Console.ReadLine().ToLower().Trim();
+                            if (rg.IsMatch(name))
+                            {
+                                cmmd.Parameters.AddWithValue("@id", Convert.ToInt32(id));
+                                cmmd.Parameters.AddWithValue("@user", name);
+                                cmmd.ExecuteNonQuery();
+                                con.Close();
+                                check = false;
+                            }
+
+                            else if (!rg.IsMatch(name))
+                            {
+                                Console.WriteLine("ERROR => PLEASE ENTER PROPER  NAME");
+                            }
+                            else if ((name).ToLower().Equals("null"))
+                            {
+                                Console.WriteLine("ERROR => THE INPUT SHOULD BE NOT BE NULL");
+                            }
+                            else if (string.IsNullOrWhiteSpace(name))
+                            {
+                                Console.WriteLine("ERROR => THE NAME SHOULD BE NOT BE EMPTY");
+                            }
+
+                        } while (check);
+                    }
+
+                    else
+                    {
+                        Console.WriteLine("NO ID FOUND");
+                        check = true;
+                    }
+                }
+                else if (string.IsNullOrWhiteSpace(id))
+                {
+                    Console.WriteLine("ERROR => THE NAME SHOULD BE NOT BE EMPTY");
+                }
+                else if (!num.IsMatch(id))
+                {
+                    Console.WriteLine("ERROR => THE ID SHOULD BE PROPER");
+                }
+            } while (check);
+
+        }
+
+        //function to update the city name 
+        public static void UpdateCity(SqlConnection con)
+        {
+            bool check = true;
+            Regex num = new Regex("[1-9]$");
+
+            Regex rg = new Regex(@"^[a-zA-Z]+$");
+            do
+            {
+                con.Close();
+                SqlCommand cmd = new SqlCommand("InsertUpdate", con);
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@stmt", "checkid");
+                Console.WriteLine("Enter the Id");
+                string id = Console.ReadLine().Trim();
+                if (num.IsMatch(id))
+                {
+                    con.Open();
+                    cmd.Parameters.AddWithValue("@id", Convert.ToInt32(id));
+                    SqlDataReader reader = cmd.ExecuteReader();
+                    if (reader.HasRows)
+                    {
+
+                        con.Close();
+                        Console.WriteLine("THE ID IS PRESENT");
+                        SqlCommand cmmd = new SqlCommand("InsertUpdate", con);
+                        cmmd.CommandType = System.Data.CommandType.StoredProcedure;
+                        cmmd.Parameters.AddWithValue("@stmt", "UpdateRow");
+                        con.Open();
+                        do
+                        {
+                            Console.WriteLine("Enter the city name to update");
+                            string city = Console.ReadLine().ToLower().Trim();
+
+
+                            if (rg.IsMatch(city))
+                            {
+                                cmmd.Parameters.AddWithValue("@id", Convert.ToInt32(id));
+                                cmmd.Parameters.AddWithValue("@City", city);
+                                cmmd.ExecuteNonQuery();
+                                con.Close();
+                                check = false;
+                            }
+
+                            else if (!rg.IsMatch(city))
+                            {
+                                Console.WriteLine("ERROR => PLEASE ENTER PROPER  NAME");
+                            }
+                            else if ((city).ToLower().Equals("null"))
+                            {
+                                Console.WriteLine("ERROR => THE INPUT SHOULD BE NOT BE NULL");
+                            }
+                            else if (string.IsNullOrWhiteSpace(city))
+                            {
+                                Console.WriteLine("ERROR => THE NAME SHOULD BE NOT BE EMPTY");
+                            }
+
+                        } while (check);
+                    }
+
+                    else
+                    {
+                        Console.WriteLine("NO ID FOUND");
+                        check = true;
+                    }
+                }
+                else if (string.IsNullOrWhiteSpace(id))
+                {
+                    Console.WriteLine("ERROR => THE NAME SHOULD BE NOT BE EMPTY");
+                }
+                else if (!num.IsMatch(id))
+                {
+                    Console.WriteLine("ERROR => THE ID SHOULD BE PROPER");
+                }
+            } while (check);
+
+        }
+
+        //function to update the phone no
+        public static void UpdatePhone(SqlConnection con)
+        {
+            bool check = true;
+            Regex num = new Regex("[1-9]$");
+            Regex regnum = new Regex("^[789][0-9]{1,9}$");
+            Regex rg = new Regex(@"^[a-zA-Z]+$");
+            do
+            {
+                con.Close();
+                SqlCommand cmd = new SqlCommand("InsertUpdate", con);
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@stmt", "checkid");
+                Console.WriteLine("Enter the Id");
+                string id = Console.ReadLine().Trim();
+                if (num.IsMatch(id))
+                {
+                    con.Open();
+                    cmd.Parameters.AddWithValue("@id", Convert.ToInt32(id));
+                    SqlDataReader reader = cmd.ExecuteReader();
+                    if (reader.HasRows)
+                    {
+
+                        con.Close();
+                        Console.WriteLine("THE ID IS PRESENT");
+                        SqlCommand cmmd = new SqlCommand("InsertUpdate", con);
+                        cmmd.CommandType = System.Data.CommandType.StoredProcedure;
+                        cmmd.Parameters.AddWithValue("@stmt", "UpdateRow");
+                        con.Open();
+                        do
+                        {
+                            Console.WriteLine("Enter the phone no. to update");
+                            string Phone = Console.ReadLine().Trim();
+
+
+                            if (regnum.IsMatch(Phone))
+                            {
+                                if (!ExistPhone(con, Phone))
+                                {
+                                    check = true;
+                                }
+                                else
+                                {
+
+                                    cmmd.Parameters.AddWithValue("@id", Convert.ToInt32(id));
+                                    cmmd.Parameters.AddWithValue("@Phone", Convert.ToInt64(Phone));
+                                    cmmd.ExecuteNonQuery();
+                                    con.Close();
+                                    check = false;
+                                }
+                            }
+
+                            else if (!regnum.IsMatch(Phone))
+                            {
+                                Console.WriteLine("ERROR => PLEASE ENTER PROPER  PHONE NO");
+                            }
+                            else if ((Phone).ToLower().Equals("null"))
+                            {
+                                Console.WriteLine("ERROR => THE INPUT SHOULD BE NOT BE NULL");
+                            }
+                            else if (string.IsNullOrWhiteSpace(Phone))
+                            {
+                                Console.WriteLine("ERROR => THE PHONE NO SHOULD BE NOT BE EMPTY");
+                            }
+
+                        } while (check);
+                    }
+
+                    else
+                    {
+                        Console.WriteLine("NO ID FOUND");
+                        check = true;
+                    }
+                }
+                else if (string.IsNullOrWhiteSpace(id))
+                {
+                    Console.WriteLine("ERROR => THE NAME SHOULD BE NOT BE EMPTY");
+                }
+                else if (!num.IsMatch(id))
+                {
+                    Console.WriteLine("ERROR => THE ID SHOULD BE PROPER");
+                }
+            } while (check);
+
+        }
+
+        //function to update the email address
+        public static void UpdateEmail(SqlConnection con)
+        {
+            bool check = true;
+            Regex num = new Regex("[1-9]$");
+            Regex regmail = new Regex(@"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,3}$");
+            do
+            {
+                con.Close();
+                SqlCommand cmd = new SqlCommand("InsertUpdate", con);
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@stmt", "checkid");
+                Console.WriteLine("Enter the Id");
+                string id = Console.ReadLine().Trim();
+                if (num.IsMatch(id))
+                {
+                    con.Open();
+                    cmd.Parameters.AddWithValue("@id", Convert.ToInt32(id));
+                    SqlDataReader reader = cmd.ExecuteReader();
+                    if (reader.HasRows)
+                    {
+
+                        con.Close();
+                        Console.WriteLine("THE ID IS PRESENT");
+                        SqlCommand cmmd = new SqlCommand("InsertUpdate", con);
+                        cmmd.CommandType = System.Data.CommandType.StoredProcedure;
+                        cmmd.Parameters.AddWithValue("@stmt", "UpdateRow");
+                        con.Open();
+                        do
+                        {
+                            Console.WriteLine("Enter the Email ID to update");
+                            string EmailID = Console.ReadLine().Trim();
+
+
+                            if (regmail.IsMatch(EmailID))
+                            {
+                                if (!ExistEmail(con, EmailID))
+                                {
+                                    check = true;
+                                }
+                                else
+                                {
+                                    con.Open();
+                                    cmmd.Parameters.AddWithValue("@id", Convert.ToInt32(id));
+                                    cmmd.Parameters.AddWithValue("@Emailid", EmailID);
+                                    cmmd.ExecuteNonQuery();
+                                    con.Close();
+                                    check = false;
+                                }
+                            }
+                            else if (!regmail.IsMatch(EmailID))
+                            {
+                                Console.WriteLine("ERROR => PLEASE ENTER PROPER  Email");
+                            }
+                            else if ((EmailID).ToLower().Equals("null"))
+                            {
+                                Console.WriteLine("ERROR => THE INPUT SHOULD BE NOT BE NULL");
+                            }
+                            else if (string.IsNullOrWhiteSpace(EmailID))
+                            {
+                                Console.WriteLine("ERROR => THE Email id SHOULD BE NOT BE EMPTY");
+                            }
+
+                        } while (check);
+                    }
+
+                    else
+                    {
+                        Console.WriteLine("NO ID FOUND");
+                        check = true;
+                    }
+                }
+                else if (string.IsNullOrWhiteSpace(id))
+                {
+                    Console.WriteLine("ERROR => THE NAME SHOULD BE NOT BE EMPTY");
+                }
+                else if (!num.IsMatch(id))
+                {
+                    Console.WriteLine("ERROR => THE ID SHOULD BE PROPER");
+                }
+            } while (check);
+
+
+        }
+
+        //funtion to update the  gender
+        public static void UpdateGender(SqlConnection con)
+        {
+            bool check = true;
+            Regex num = new Regex("[1-9]$");
+            Regex rg = new Regex(@"^[a-zA-Z]+$");
+            do
+            {
+                con.Close();
+                SqlCommand cmd = new SqlCommand("InsertUpdate", con);
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@stmt", "checkid");
+                Console.WriteLine("Enter the Id");
+                string id = Console.ReadLine().Trim();
+                if (num.IsMatch(id))
+                {
+                    con.Open();
+                    cmd.Parameters.AddWithValue("@id", Convert.ToInt32(id));
+                    SqlDataReader reader = cmd.ExecuteReader();
+                    if (reader.HasRows)
+                    {
+                        con.Close();
+                        Console.WriteLine("THE ID IS PRESENT");
+                        SqlCommand cmmd = new SqlCommand("InsertUpdate", con);
+                        cmmd.CommandType = System.Data.CommandType.StoredProcedure;
+                        cmmd.Parameters.AddWithValue("@stmt", "UpdateRow");
+                        con.Open();
+                        do
+                        {
+                            Console.WriteLine("Enter the Gender to update");
+                            string Gender = Console.ReadLine().ToLower().Trim();
+
+
+                            if (rg.IsMatch(Gender))
+                            {
+                                if (!Gender.Equals("male") && !Gender.Equals("female"))
+                                {
+                                    Console.WriteLine("ERROR => THE GENDER IS NOT PROPER");
+                                    check = true;
+                                }
+                                else if (string.IsNullOrWhiteSpace(Gender))
+                                {
+                                    Console.WriteLine("GENDER SHOULD NOT BE EMPTY");
+                                }
+                                else
+                                {
+
+                                    cmmd.Parameters.AddWithValue("@id", Convert.ToInt32(id));
+                                    cmmd.Parameters.AddWithValue("@Gender", Gender);
+                                    cmmd.ExecuteNonQuery();
+                                    con.Close();
+                                    check = false;
+                                }
+                            }
+                            else if (!rg.IsMatch(Gender))
+                            {
+                                Console.WriteLine("ERROR => PLEASE ENTER PROPER  Gender");
+                            }
+                            else if ((Gender).ToLower().Equals("null"))
+                            {
+                                Console.WriteLine("ERROR => THE INPUT SHOULD BE NOT BE NULL");
+                            }
+                            else if (string.IsNullOrWhiteSpace(Gender))
+                            {
+                                Console.WriteLine("ERROR => THE Gender SHOULD BE NOT BE EMPTY");
+                            }
+
+                        } while (check);
+                    }
+
+                    else
+                    {
+                        Console.WriteLine("NO ID FOUND");
+                        check = true;
+                    }
+                }
+                else if (string.IsNullOrWhiteSpace(id))
+                {
+                    Console.WriteLine("ERROR => THE NAME SHOULD BE NOT BE EMPTY");
+                }
+                else if (!num.IsMatch(id))
+                {
+                    Console.WriteLine("ERROR => THE ID SHOULD BE PROPER");
+                }
+            } while (check);
+        }
+        //public static string CheckValid(SqlConnection con, string PhoneNo)
+        //{
+        //    //int val;
+        //    SqlCommand cmd = new SqlCommand("InsertUpdate", con);
+        //    cmd.CommandType = System.Data.CommandType.StoredProcedure;
+        //    con.Open();
+        //    cmd.Parameters.AddWithValue("@stmt", "CheckValid");
+        //    cmd.Parameters.AddWithValue("@Phone", PhoneNo);
+        //    cmd.Parameters.Add("@checkuser", SqlDbType.VarChar, 100);
+        //    cmd.Parameters["@checkuser"].Direction = ParameterDirection.Output;
+        //    cmd.ExecuteReader();
+        //    var b = cmd.Parameters["@checkuser"].Value;
+        //    if (!string.IsNullOrWhiteSpace(Convert.ToString(cmd.Parameters["@checkuser"].Value)))
+        //    {
+        //        string a = Convert.ToString(cmd.Parameters["@checkuser"].Value);
+        //        con.Close();
+        //        return a;
+        //    }
+        //    else
+        //    {
+        //        con.Close();
+        //        return null;
+        //    }
+        //}
+
+        //public static int BookCount(SqlConnection con,int bookNo)
+        //{
+        //    int val;
+        //    SqlCommand cmd = new SqlCommand("InsertUpdate",con);
+        //    cmd.CommandType = System.Data.CommandType.StoredProcedure;
+        //    con.Open();
+        //    cmd.Parameters.AddWithValue("@stmt", "CheckBook");
+        //    cmd.Parameters.AddWithValue("@bookid",bookNo);
+        //    cmd.Parameters.Add("@count", SqlDbType.Int,100);
+        //    cmd.Parameters["@count"].Direction = ParameterDirection.Output;
+        //    cmd.ExecuteReader();
+        //    val = Convert.ToInt32(cmd.Parameters["@count"].Value.ToString());
+        //    return val;
+
+        //}
+
+        //public static void DisplayIssuedTB(SqlConnection con)
+        //{
+        //    SqlCommand command = new SqlCommand("InsertUpdate", con);
+        //    command.CommandType = System.Data.CommandType.StoredProcedure;
+        //    command.Parameters.AddWithValue("@stmt", "IssuedTb");
+        //    con.Open();
+        //    SqlDataReader reader = command.ExecuteReader();
+        //    if (reader.HasRows)
+        //    {
+        //        while (reader.Read())
+        //        {
+        //            Console.WriteLine();
+        //            for (int i = 0; i < reader.FieldCount; i++)
+        //            {
+        //                if (i == 1 || i == 2 || i == 3 || i == 5)
+        //                {
+
+        //                    Console.Write(reader.GetValue(i).ToString().PadRight(20));
+        //                }
+        //                else if (i == 4)
+        //                {
+        //                    Console.Write(reader.GetValue(i).ToString().PadRight(40));
+        //                }
+        //                else
+        //                {
+        //                    Console.Write(reader.GetValue(i) + "\t");
+        //                }
+        //            }
+        //            Console.WriteLine();
+        //        }
+        //    }
+        //    else
+        //    {
+        //        Console.WriteLine("No Book Is Issued!");
+        //    }
+        //    con.Close();
+
+        //}
+    }
+    public class TablePrinter
+    {
+        private readonly string[] titles;
+        private readonly List<int> lengths;
+        private readonly List<string[]> rows = new List<string[]>();
+        public TablePrinter(params string[] titles)
+        {
+            this.titles = titles;
+            lengths = titles.Select(t => t.Length).ToList();
+        }
+        public void AddRow(params object[] row)
+        {
+            if (row.Length != titles.Length)
+            {
+                throw new System.Exception($"Added row length [{row.Length}] is not equal to title row length [{titles.Length}]");
+            }
+            rows.Add(row.Select(o => o.ToString()).ToArray());
+            for (int i = 0; i < titles.Length; i++)
+            {
+                if (rows.Last()[i].Length > lengths[i])
+                {
+                    lengths[i] = rows.Last()[i].Length;
+                }
+            }
+        }
+        public void Print()
+        {
+            lengths.ForEach(l => System.Console.Write("+-" + new string('-', l) + '-'));
+            System.Console.WriteLine("+");
+            string line = "";
+            for (int i = 0; i < titles.Length; i++)
+            {
+                line += "| " + titles[i].PadRight(lengths[i]) + ' ';
+            }
+            System.Console.WriteLine(line + "|");
+            lengths.ForEach(l => System.Console.Write("+-" + new string('-', l) + '-'));
+            System.Console.WriteLine("+");
+            foreach (var row in rows)
+            {
+                line = "";
+                for (int i = 0; i < row.Length; i++)
+                {
+                    if (int.TryParse(row[i], out int n))
+                    {
+                        line += "| " + row[i].PadLeft(lengths[i]) + ' ';  // numbers are padded to the left
+                    }
+                    else
+                    {
+                        line += "| " + row[i].PadRight(lengths[i]) + ' ';
+                    }
+                }
+                System.Console.WriteLine(line + "|");
+            }
+            lengths.ForEach(l => System.Console.Write("+-" + new string('-', l) + '-'));
+            System.Console.WriteLine("+");
+        }
+    }
+}

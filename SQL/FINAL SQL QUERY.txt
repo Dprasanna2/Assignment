@@ -1,0 +1,211 @@
+ALTER procedure InsertUpdate
+(
+@user nvarchar(50)=null,
+@City nvarchar(50)=null,
+@Phone numeric(10,0)=null,
+@Emailid nvarchar(50)=null,
+@Gender nvarchar(50)=null,
+@stmt varchar(50)=null,
+@bookname nvarchar(50)=null,
+@bookid int=null,
+@GetBook int=0 out,
+@P_id int=null,
+@B_id int=null,
+@ReturnBookId int=null,
+@Return_date date=null,
+@status nvarchar(50)=null,
+@id int =null,
+@count int=null output
+)
+AS
+BEGIN
+
+--QUERY FOR INSERTING THE DETAILS IN PERSON TABLE
+if @stmt='insert'
+begin
+insert into PersonTB values(@user,@City,@Phone,@Emailid,@Gender)
+end
+
+--QUERY FOR ISSUE BOOK AFTER CHECKING VALID USER
+if @stmt='issuebook'
+begin
+select Person_id from PersonTB where Phone_number = @Phone
+end
+
+--QUERY FOR DISPLAYING THE BOOK LIST TABLE
+if @stmt='DisplayBook'
+begin
+select * from bookTB
+end
+
+--QUERY FOR DISPLAYING REGISTERED USER DETAILS TABLE
+if @stmt='DisplayPerson'
+begin 
+select * from PersonTB
+end
+
+--QUERIY FOR ISSUING BOOK
+if @stmt='GetBook'
+BEGIN
+select @GetBook=Book_id from bookTB where Book_id=@bookid
+End
+
+--QUERY FOR CHECKING THE COUNT OF BOOK (GREATER THAN 0 OR NOT)
+if @stmt='BookCount'
+begin 
+select [Count] from bookTB where Book_id=@bookid
+end
+
+--QUERY FOR GETTING BOOK ID FOR ISSUING BOOK
+if @stmt='BookNo'
+begin
+select Book_id from bookTB where Book_id=@bookid
+end
+
+--QUERY FOR INSERTING DETAILS OF BOOK ISSUED
+if @stmt = 'BookIssued'
+Begin
+insert into IssuedTB values(@P_id,@B_id,GETDATE(),@Return_date,'Not Submitted')
+END
+
+--QUERY FOR UPDATING THE COUNT IN BOOK TABLE
+if @stmt ='UpdateCount'
+BEGIN
+update bookTB SET [Count]=[Count]-1 where Book_id=@bookid
+END
+
+--QUERY FOR CHECKING IF PHONENo ALREADY EXIST WHILE CREATING NEW ID
+if @stmt ='ExistPhone'
+begin 
+select * from PersonTB where Phone_number=@Phone
+end
+
+--QUERY FOR CHECKING IF EMAIL ID ALREADY EXIST WHILE CREATING NEW ID
+if @stmt ='ExistEmail'
+begin
+select * from PersonTB where Email_Id=@Emailid
+end
+
+--QUERY FOR CHECKING THE VALID USER WHILE RETURNING THE BOOK
+if @stmt='return'
+begin
+select * from IssuedTB where P_id= 
+(select Person_id from PersonTB where Phone_number = @Phone)
+end
+
+--QUERY TO UPDATE COUNT OF BOOK AFTER RETURNING THE BOOK
+--if @stmt = 'ReturnBook'
+--BEGIN
+--Update bookTB set [Count]=[Count]+1 where Book_id=(
+--select Book_id from bookTB where Book_id=@ReturnBookId)
+--end
+
+--QUERY TO UPDATE STATUS AFTER RETURNING THE BOOK
+if @stmt ='UpdateStatus'
+BEGIN
+update IssuedTB set [Status]='Submitted' 
+where P_id = (select Person_id from PersonTB where Phone_number = @Phone)
+END
+
+--if @stmt ='UpdateStatus'
+--BEGIN
+--Update IssuedTB set [Status]='Submitted' where B_id=
+--(select B.Book_id from PersonTB P
+--INNER JOIN IssuedTB I on P.Person_id = I.P_id INNER JOIN bookTB B On I.B_id=B.Book_id
+--where Phone_number=@Phone) AND P_id = (select Person_id from PersonTB where Phone_number = @Phone)
+--END
+
+--QUERY TO FILTER USING PHONE NO
+if @stmt = 'FilterPhone'
+Begin
+select id,Username,City,Phone_number,Email_id,Gender,Book_name,Issued_Date,[Status] from PersonTB P
+INNER JOIN IssuedTB I on P.Person_id = I.P_id inner join bookTB B on I.B_id=B.Book_id where Phone_number like '%'+QUOTENAME(@Phone)+'%'
+end
+
+--QUERY TO FILTER USING EMAIL ID
+if @stmt = 'FilterEmail'
+Begin
+select id,Username,City,Phone_number,Email_id,Gender,Book_name,Issued_Date,[Status] from PersonTB P
+INNER JOIN IssuedTB I on P.Person_id = I.P_id inner join bookTB B on I.B_id=B.Book_id where Email_Id = @Emailid
+end
+
+--QUERY TO FILTER USING GENDER
+if @stmt = 'FilterGender'
+Begin
+select id,Username,City,Phone_number,Email_id,Gender,Book_name,Issued_Date,[Status] from PersonTB P
+INNER JOIN IssuedTB I on P.Person_id = I.P_id inner join bookTB B on I.B_id=B.Book_id where Gender=@Gender
+end
+
+--QUERY TO FILTER USING CITY
+if @stmt = 'FilterCity'
+Begin
+select id,Username,City,Phone_number,Email_id,Gender,Book_name,Issued_Date,[Status] from PersonTB P
+INNER JOIN IssuedTB I on P.Person_id = I.P_id inner join bookTB B on I.B_id=B.Book_id where City like '%'+ @City+'%'
+end
+
+--QUERY TO FILTER ALL THE VALUES
+if @stmt = 'FilterAll'
+begin
+select id as ID,Username,City,Phone_number,Email_id,Gender,B_id as BookID,Book_name,Issued_Date,Return_Date,[Status] from PersonTB P
+INNER JOIN IssuedTB I on P.Person_id = I.P_id inner join bookTB B on I.B_id=B.Book_id
+end
+
+
+--QUERY FOR ISSUING BOOK AGAIN AND RETURN BOOK
+if @stmt='CheckValid'
+begin
+select P.Phone_number,I.B_id from PersonTB P
+INNER JOIN IssuedTB I on P.Person_id = I.P_id INNER JOIN bookTB B On I.B_id=B.Book_id
+where Phone_number=@Phone AND [Status]='Not Submitted' AND Book_id=@ReturnBookId
+
+end
+
+if @stmt = 'ReturnBook'
+BEGIN
+Update bookTB set [Count]=[Count]+1 where Book_id=(
+select Book_id from bookTB where Book_id=@ReturnBookId)
+end
+
+--if @stmt='CheckValid1'
+--begin
+--select P.Phone_number from PersonTB P
+--INNER JOIN IssuedTB I on P.Person_id = I.P_id INNER JOIN bookTB B On I.B_id=B.Book_id
+--where Phone_number=@Phone AND [Status]='Not Submitted' AND B_id=@ReturnBookId
+--end
+
+if @stmt='ReIssue'
+begin
+select P.Phone_number from PersonTB P
+INNER JOIN IssuedTB I on P.Person_id = I.P_id INNER JOIN bookTB B ON I.B_id=B.Book_id
+where Phone_number=@Phone AND [Status]='Not Submitted'
+end
+
+
+--QUERY FOR CHECKING ID
+if @stmt='checkid'
+begin
+select * from PersonTB where Person_id=@id
+end
+
+--QUERY FOR UPDATE THE VALUES IN PERSONAL DETAILS TABLE
+if @stmt='UpdateRow'
+begin
+update PersonTB set Username=ISNULL(@user,Username),
+City=ISNULL(@City,City),
+Phone_number=ISNULL(@Phone,Phone_number),
+Email_Id=ISNULL(@Emailid,Email_Id),
+Gender=ISNULL(@Gender,Gender)
+where Person_id=@id
+end
+
+
+
+End
+
+--exec InsertUpdate null,null,9594111699,null,null,'issuebook'
+select * from PersonTB
+select * from bookTB
+select * from IssuedTB
+
+
+--DBCC CHECKIDENT ('IssuedTB', RESEED, 0)
