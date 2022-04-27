@@ -1,0 +1,236 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace stack_list2
+{
+    class Program
+    {
+        bool check = false;
+        public enum StackOperation
+        {
+            PUSH = 1, POP = 2, PEEK = 3, DISPLAY = 4, EXIT = 5
+        }
+        static void Main(string[] args)
+        {
+
+            Console.WriteLine("-------------------------------------------IMPLEMENTATION OF STACK USING LIST-------------------------------------------\n");
+            stack_list stack = new stack_list();
+            stack.Size();
+            string output;
+            do
+            {
+                Console.Clear();
+                Console.WriteLine(" 1.PUSH \n 2.POP \n 3.PEEK \n 4.DISPLAY \n 5.EXIT \n ------------------------------------- ");
+                choice:
+                Console.WriteLine(" \nENTER THE CHOICE YOU WANT");
+                Enum.TryParse<StackOperation>(Console.ReadLine().ToUpper(), out var Stack_Operation);
+                do
+                {
+                    switch (Stack_Operation)
+                    {
+                        case StackOperation.PUSH:
+                            Console.WriteLine("ENTER THE VALUE TO PUSH IN STACK");
+                            stack.push(Console.ReadLine());
+                            break;
+                        case StackOperation.POP:
+                            stack.pop();
+                            break;
+                        case StackOperation.PEEK:
+                            stack.peek();
+                            break;
+                        case StackOperation.DISPLAY:
+                            stack.Print();
+                            break;
+                        case StackOperation.EXIT:
+                            System.Environment.Exit(0);
+                            break;
+                        default:
+                            Console.WriteLine("Invalid Choice Please enter proper value!!!!");
+                            goto choice;
+                    }
+                //again_perform:
+                    do
+                    {
+                     
+                        //try
+                        //{
+                            Console.WriteLine("\nDO YOU WANT TO CONTINUE RUNNING STACK OPERATION? YES/NO");
+                            output = Console.ReadLine().ToUpper();
+                            if (output != "YES" && output != "Y" && output != "NO" && output != "N")
+                            {
+                                Console.WriteLine("ERROR => ENTER VALID INPUT:");
+                                check = true;
+                            }
+                        //}
+                        //catch (invalid_input s)
+                        //{
+                        //    Console.WriteLine(s.Message);
+                        //    goto again_perform;
+                        //}
+                    }
+                    while (check);
+                }
+                while (output == "YES" || output == "Y");
+            //again:
+                do
+                {
+                    //try
+                    //{
+
+                        Console.WriteLine("\nDO YOU WANT TO CONTINUE? YES/NO");
+                        output = Console.ReadLine().ToUpper();
+                        if (output != "YES" && output != "Y" && output != "NO" && output != "N")
+                        {
+                        Console.WriteLine("ERROR => ENTER VALID INPUT:");
+                            check = true;
+                        }
+                    //}
+                    //catch (invalid_input s)
+                    //{
+                    //    Console.WriteLine(s.Message);
+                    //    goto again;
+                    //}
+                }
+                while (check);
+            }
+            while (output == "YES" || output == "Y");
+        }
+    }
+    public class invalid_input : Exception
+    {
+        public invalid_input() : base()
+        { }
+        public invalid_input(string message) : base(message)
+        { }
+    }
+    class stack_list
+    {
+        public int Set_Size;
+        List<string> lis = new List<string>();
+        int current_size = -1;
+        public void Size()
+        {
+        retrysize:
+            do
+            {
+                try
+                {
+                    Console.WriteLine("Enter the size of stack :");
+                    Set_Size = int.Parse(Console.ReadLine());
+                    if (Set_Size <= 0)
+                    {
+                        Console.WriteLine("ERROR => ENTER THE VALID SIZE");
+                        check= true;
+                    }
+                }
+                catch (FormatException)
+                {
+                    Console.WriteLine("ERROR => ENTER VALID INPUT ");
+                    goto retrysize;
+                }
+            }
+            while (check);
+        }
+        public bool EmptyStack()
+        {
+            if (current_size == -1)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        public void push(string val)
+        {
+        //push_again:
+            do
+            {
+                //try
+                //{
+                    if (current_size == (Set_Size - 1))
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine("ERROR => STACK IS FULL YOU CANNOT ENTER ANY VALUE \n");
+                        Console.ResetColor();
+                    check = true;
+                    }
+                    else if (val.Length == 0 || val.ToLower() == "null")
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine("PLEASE ENTER VALID INPUT");
+                        Console.ResetColor();
+                    check = true;
+                }
+                    else
+                    {
+                        lis.Add(val);
+                        current_size++;
+                        Console.ForegroundColor = ConsoleColor.Green;
+                        Console.WriteLine("THE VALUE ENTERED IN THE STACK SUCCESSFULLY!!");
+                        Console.ResetColor();
+                        Console.WriteLine("THE VALUE IN THE STACK ARE:");
+                        for (int i = current_size; i > -1; i--)
+                        {
+                            Console.WriteLine("{0}", lis[i]);
+                        }
+
+                    }
+                //}
+                //catch (invalid_input s)
+                //{
+                //    Console.WriteLine(s.Message);
+                //    goto push_again;
+                //}
+            } while (true);
+        }
+        public void pop()
+        {
+            if (EmptyStack())
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("ERROR => SORRY!!! Stack is empty!");
+                Console.ResetColor();
+            }
+            else
+            {
+                lis.RemoveAt(current_size);
+                current_size--;
+                Console.WriteLine("ITEM REMOVED SUCCESFULLY IS {0}\n",lis.ElementAt(current_size));
+            }
+        }
+        public void peek()
+        {
+            if (EmptyStack())
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("ERROR => SORRY!!! Stack is empty!");
+                Console.ResetColor();
+            }
+            else
+            {
+                Console.WriteLine("THE TOP VALUE IN STACK IS  :{0}", lis.ElementAt(current_size));
+            }
+        }
+        public void Print()
+        {
+            if (EmptyStack())
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("ERROR => STACK IS EMPTY NO ELEMENT TO DISPLAY");
+                Console.ResetColor();
+            }
+            else
+            {
+                for (int i = current_size; i > -1; i--)
+                {
+                    Console.WriteLine("THE VALUES PRESENT IN THE STACK AT {0} position is {1}",i, lis[i]);
+                }
+            }
+        }
+    }
+}

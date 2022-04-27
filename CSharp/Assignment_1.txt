@@ -1,0 +1,340 @@
+using System;
+using System.IO;
+using System.Text.RegularExpressions;
+namespace assign1c
+{
+    class Program
+    {
+        public enum Operation
+        {
+            MULTILEVEL_INHERITANCE = 1, OPERATOR_OVERLOADING = 2, PATTERN = 3, EXIT = 4
+        }
+        static void Main(string[] args)
+        {
+            string output;
+            do
+            {
+                Console.Clear();
+           
+                Console.WriteLine(" 1.MULTILEVEL_INHERITANCE \n 2.OPERATOR_OVERLOADING \n 3.PATTERN \n 4.EXIT \n --------------------------------");
+            choice:
+                Console.WriteLine(" \nENTER THE CHOICE YOU WANT");
+                Enum.TryParse<Operation>(Console.ReadLine().ToUpper(), out var operation);
+                switch (operation)
+                {
+
+
+                    case Operation.MULTILEVEL_INHERITANCE:
+                        Percentage P = new Percentage();
+                        P.Getname();
+                        P.GetMark();
+                        P.GetPercent();
+                        break;
+
+
+
+                    case Operation.OPERATOR_OVERLOADING:
+                        Operator d1 = new Operator();
+                        Operator d2 = new Operator();
+                    back:
+                        try
+                        {
+                            Console.WriteLine("ENTER THE FIRST INPUT:");  //getting first input
+                            d1.Values = Console.ReadLine();
+                            if (string.IsNullOrEmpty(d1.Values))
+                            {
+                                throw new invalid_input("ERROR => THE INPUT 1 SHOULD BE NOT BE EMPTY");
+                            }
+                            if (string.IsNullOrWhiteSpace(d1.Values))
+                            {
+                                throw new invalid_input("ERROR => THE INPUT 1 SHOULD NOT CONTAIN SPACE");
+                            }
+                            if((d1.Values).ToLower() == "null")
+                            {
+                                throw new invalid_input("ERROR => THE INPUT SHOULD BE NOT BE NULL");
+                            }
+                        }
+                        catch (invalid_input op)
+                        {
+                            Console.WriteLine(op.Message);
+                            goto back;
+                        }
+                    back1:
+                        try
+                        {
+                            Console.WriteLine("ENTER THE SECOND INPUT:");   //getting second input
+                            d2.Values = Console.ReadLine();
+                            if (string.IsNullOrEmpty(d2.Values))
+                            {
+                                throw new invalid_input("ERROR => THE INPUT 2 SHOULD BE NOT BE EMPTY");
+                            }
+                            if ((d2.Values).ToLower() == "null")
+                            {
+                                throw new invalid_input("ERROR => THE INPUT SHOULD BE NOT BE NULL");
+                            }
+                            if (string.IsNullOrWhiteSpace(d2.Values))
+                            {
+                                throw new invalid_input("ERROR => THE INPUT 1 SHOULD NOT CONTAIN SPACE");
+                            }
+                        }
+                        catch (invalid_input op1)
+                        {
+                            Console.WriteLine(op1.Message);
+                            goto back1;
+                        }
+                        Operator d3 = d1 + d2;
+                        Console.WriteLine("OUTPUT VALUE IS AFTER + OPERATOR IS :{0}", d3.Values);
+                        break;
+
+
+
+                    case Operation.PATTERN:
+                        Pattern print = new Pattern();
+                        print.print();
+                        break;
+
+
+
+                    case Operation.EXIT:
+                        System.Environment.Exit(0);
+                        break;
+                    default:
+                        Console.WriteLine("Invalid Choice Please enter valid choice!!! ");
+                        goto choice;
+                }
+            again:
+                try
+                {
+                    Console.WriteLine("\nDO YOU WANT TO CONTINUE? YES/NO");
+                    output = Console.ReadLine().ToUpper();
+                    if (output != "YES" && output != "Y" && output != "NO" && output != "N")
+                    {
+                        throw new invalid_input("ERROR => ENTER VALID INPUT:");
+                    }
+                }
+                catch (invalid_input s)
+                {
+                    Console.WriteLine(s.Message);
+                    goto again;
+                }
+            }
+
+            while (output == "YES" || output == "Y");
+
+        }
+    }
+    public class invalid_input : Exception
+    {
+        public invalid_input() : base()
+        { }
+        public invalid_input(string message) : base(message)
+        { }
+    }
+    public class Student
+    {
+        public string Name;
+        Regex rg = new Regex("^[a-zA-Z]+$");
+        public void Getname()
+        {
+        retry:
+            try
+            {
+                Console.WriteLine("Enter the Name:\n");
+                Name = Console.ReadLine();
+                if (string.IsNullOrWhiteSpace(Name))
+                {
+                    throw new invalid_input("ERROR => THE FIRSTNAME SHOULD BE NOT BE EMPTY");
+                }
+                //if (int.TryParse(Name, out int res))
+                //{
+                //    throw new invalid_input("ERROR => DON'T ENTER NUMBER");
+                //}
+                if ((Name).ToLower() == "null")
+                {
+                    throw new invalid_input("ERROR => THE INPUT SHOULD BE NOT BE NULL");
+                }
+                if (!rg.IsMatch(Name))
+                {
+                    throw new invalid_input("ERROR => PLEASE ENTER PROPER NAME");
+                }
+            }
+            catch (invalid_input e1)
+            {
+                Console.WriteLine(e1.Message);
+                goto retry;
+            }
+        }
+    }
+    public class Marks : Student
+    {
+        public int num;
+        public string marks;
+        Regex reg = new Regex("^[0-9]{1,2}$");
+        public void GetMark()
+        {
+        retrymarks:
+            try
+            {
+                Console.WriteLine("Enter the marks of the subject:\n");
+                marks = Console.ReadLine();
+                if (!reg.IsMatch(marks))
+                {
+                    throw new invalid_input("ERROR => ENTER VALID INPUT ");
+                }
+                if (string.IsNullOrWhiteSpace(marks))
+                {
+                    throw new invalid_input("ERROR => THE FILE NAME SHOULD BE NOT BE EMPTY");
+                }
+                else
+                {
+                    num = Convert.ToInt32(marks);
+                }
+            }
+            catch (invalid_input n)
+            {
+                Console.WriteLine(n.Message);
+                goto retrymarks;
+            }
+        }
+    }
+    public class Percentage : Marks
+    {
+        public int percent;
+        public void GetPercent()
+        {
+            Console.WriteLine("THE STUDENT NAME IS:" + Name.ToUpper());
+            Console.WriteLine("THE MARKS ARE " + num);
+            percent = (num * 100) / 100;
+            Console.WriteLine("The percentage of the student is:" + percent + "%");
+        }
+    }
+    class Operator
+    {
+        public string Values;
+        static int val1, val2;
+        public static Operator operator +(Operator d1, Operator d2)
+        {
+            Operator d = new Operator();
+            if (int.TryParse(d1.Values, out val1) && int.TryParse(d2.Values, out val2))      //Try Parse if value can converted to int if not then directly concat them in else part
+            {
+                int val3 = val1 + val2;
+                d.Values = val3.ToString();
+                return d;
+            }
+            else
+            {
+                d.Values = d1.Values + d2.Values;
+                return d;
+            }
+        }
+    }
+    public class Pattern
+    {
+        static string num;
+        static int j;
+        int input;
+        Regex rr = new Regex("^[0-9]*$");
+        public void print()
+        {
+        print_again:
+            try
+            {
+                Console.WriteLine("ENTER THE VALUE");
+                num = Console.ReadLine();
+                if (!rr.IsMatch(num))
+                {
+                    throw new invalid_input("ERROR => ENTER THE VALID POSITIVE VALUE ");
+                }
+                if (string.IsNullOrWhiteSpace(num))
+                {
+                    throw new invalid_input("ERROR => THE FILE NAME SHOULD BE NOT BE EMPTY");
+                }
+                else
+                {
+                    input = Convert.ToInt32(num);
+                }
+            }
+            catch (invalid_input n)
+            {
+                Console.WriteLine(n.Message);
+                goto print_again;
+            }
+            int isnum = 0;
+            if (input % 2 == 0)
+            {
+                isnum = 1;
+            }
+            else
+            {
+                isnum = 0;
+            }
+            int space = input - 1;
+            int len = 1;
+            for (int i = 0; i < input * 2 - 1; i++)
+            {
+                if (space >= 0)
+                {
+                    for (j = 0; j < space; j++)
+                    {
+                        Console.Write(" ");
+                    }
+                    if (isnum == 1)
+                    {
+                        print_num(j + 1, len);
+                    }
+                    else
+                    {
+                        print_alpha(j, len);
+                    }
+                }
+                if (isnum == 0)
+                {
+                    isnum = 1;
+                }
+                else
+                {
+                    isnum = 0;
+                }
+                Console.WriteLine();
+                if (i < input - 1)
+                {
+                    len += 2;
+                    space--;
+                }
+                else
+                {
+                    len -= 2;
+                    space++;
+                }
+            }
+        }
+        public static void print_alpha(int start, int len)
+        {
+            for (int i = start; i < start + len; i++)
+            {
+                if (i == start || i == start + len - 1)
+                {
+                    Console.Write((char)(i + 65));
+                }
+                else
+                {
+                    Console.Write("*");
+                }
+            }
+        }
+        public static void print_num(int start, int len)
+        {
+            for (int i = start; i < start + len; i++)
+            {
+                if (i == start || i == start + len - 1)
+                {
+                    Console.Write(i);
+                }
+                else
+                {
+                    Console.Write("*");
+                }
+            }
+        }
+    }
+}
